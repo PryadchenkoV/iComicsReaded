@@ -17,14 +17,23 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="viS-LR-S5b" userLabel="TopBG">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="333.5"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NSS-4T-LtF" userLabel="BottomBG">
+                                <rect key="frame" x="0.0" y="333.5" width="375" height="333.5"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" maximumZoomScale="5" translatesAutoresizingMaskIntoConstraints="NO" id="KLp-1i-fEb">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="dEj-zh-Gvz">
+                                    <imageView multipleTouchEnabled="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="dEj-zh-Gvz">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                         <gestureRecognizers/>
                                     </imageView>
                                 </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <gestureRecognizers/>
                                 <constraints>
                                     <constraint firstAttribute="bottom" secondItem="dEj-zh-Gvz" secondAttribute="bottom" id="MhQ-6y-rWd"/>
@@ -39,18 +48,18 @@
                                 </connections>
                             </scrollView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mG8-Pb-zwb" userLabel="Previous Page">
-                                <rect key="frame" x="0.0" y="20" width="70" height="647"/>
+                                <rect key="frame" x="0.0" y="20" width="40" height="647"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="70" id="q5p-xU-Ksj"/>
+                                    <constraint firstAttribute="width" constant="40" id="q5p-xU-Ksj"/>
                                 </constraints>
                                 <connections>
                                     <action selector="changePageToPrevious:" destination="BYZ-38-t0r" eventType="touchUpInside" id="kZL-15-MAk"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Uoa-fQ-Wai" userLabel="Next Page">
-                                <rect key="frame" x="305" y="20" width="70" height="647"/>
+                                <rect key="frame" x="335" y="20" width="40" height="647"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="70" id="WW9-YX-33K"/>
+                                    <constraint firstAttribute="width" constant="40" id="WW9-YX-33K"/>
                                 </constraints>
                                 <connections>
                                     <action selector="changePageToNext:" destination="BYZ-38-t0r" eventType="touchUpInside" id="yXg-TO-ztH"/>
@@ -62,11 +71,19 @@
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="KLp-1i-fEb" secondAttribute="trailing" id="8XT-SE-Aam"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="top" secondItem="Uoa-fQ-Wai" secondAttribute="top" id="AGc-cd-qKQ"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="Uoa-fQ-Wai" secondAttribute="bottom" id="BNT-id-NUo"/>
+                            <constraint firstItem="NSS-4T-LtF" firstAttribute="top" secondItem="viS-LR-S5b" secondAttribute="bottom" id="MNI-e5-HdO"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="mG8-Pb-zwb" secondAttribute="bottom" id="WGx-7u-xCA"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="Uoa-fQ-Wai" secondAttribute="trailing" id="Yvf-w6-s6V"/>
+                            <constraint firstItem="viS-LR-S5b" firstAttribute="leading" secondItem="KLp-1i-fEb" secondAttribute="leading" id="aT1-bU-N30"/>
                             <constraint firstItem="mG8-Pb-zwb" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="alz-li-IC0"/>
                             <constraint firstItem="mG8-Pb-zwb" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="dEE-Ra-70l"/>
+                            <constraint firstItem="NSS-4T-LtF" firstAttribute="bottom" secondItem="KLp-1i-fEb" secondAttribute="bottom" id="eVG-Wf-Uqq"/>
+                            <constraint firstItem="NSS-4T-LtF" firstAttribute="trailing" secondItem="KLp-1i-fEb" secondAttribute="trailing" id="ebf-X5-U35"/>
+                            <constraint firstItem="viS-LR-S5b" firstAttribute="top" secondItem="KLp-1i-fEb" secondAttribute="top" id="fpZ-8f-B8a"/>
+                            <constraint firstItem="viS-LR-S5b" firstAttribute="trailing" secondItem="KLp-1i-fEb" secondAttribute="trailing" id="jLE-qe-tyt"/>
+                            <constraint firstItem="NSS-4T-LtF" firstAttribute="leading" secondItem="KLp-1i-fEb" secondAttribute="leading" id="jMm-j4-Inf"/>
                             <constraint firstAttribute="bottom" secondItem="KLp-1i-fEb" secondAttribute="bottom" id="kqX-0p-XKc"/>
+                            <constraint firstItem="NSS-4T-LtF" firstAttribute="height" secondItem="viS-LR-S5b" secondAttribute="height" id="n2X-0U-8qd"/>
                             <constraint firstItem="KLp-1i-fEb" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="ruU-kc-Mbz"/>
                             <constraint firstItem="KLp-1i-fEb" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="ufu-Io-PnS"/>
                         </constraints>
@@ -74,6 +91,7 @@
                     </view>
                     <connections>
                         <outlet property="imageView" destination="dEj-zh-Gvz" id="xGY-9P-suN"/>
+                        <outlet property="scrollView" destination="KLp-1i-fEb" id="SYI-hP-Iir"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
