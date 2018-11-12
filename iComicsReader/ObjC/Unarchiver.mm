@@ -19,6 +19,10 @@
 @end
 
 @implementation Unarchiver
+{
+    BOOL* cancelledPtr;
+    NSString* previousPath;
+}
 
 + (Unarchiver*) sharedInstance
 {
@@ -39,8 +43,21 @@
     return self;
 }
 
+-(void) cancelTask
+{
+    *cancelledPtr = YES;
+}
+
 - (void) readArchiveForPath:(NSString*)path
 {
+    if ([previousPath isEqualToString: path])
+    {
+        [self willChangeValueForKey:@"arrayOfComics"];
+        [self didChangeValueForKey:@"arrayOfComics"];
+        return;
+    }
+    _arrayOfComics = [NSMutableArray new];
+    __block BOOL cancelled = NO;
     dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
         const char *pathString = [path cStringUsingEncoding:NSASCIIStringEncoding];
         struct archive* archive;
@@ -56,7 +73,7 @@
             return;
         }
         int page_number = 0;
-        while (archive_read_next_header(archive, &entry) == ARCHIVE_OK) {
+        while (archive_read_next_header(archive, &entry) == ARCHIVE_OK && !cancelled) {
             size_t entry_size = archive_entry_size(entry);
             char * content;
             int readEntryData;
@@ -91,9 +108,11 @@
             NSLog(@"Archive Is Not OK");
             return;
         }
+        self->previousPath = path;
         [self willChangeValueForKey:@"arrayOfComics"];
         [self didChangeValueForKey:@"arrayOfComics"];
     });
+    cancelledPtr = &cancelled;
 }
 
 @end

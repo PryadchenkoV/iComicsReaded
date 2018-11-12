@@ -14,6 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (Unarchiver*) sharedInstance;
 
+- (void) cancelTask;
 - (void) readArchiveForPath:(NSString*)path;
 
 @property (readonly) NSMutableArray* arrayOfComics;

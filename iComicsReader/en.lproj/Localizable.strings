@@ -1,0 +1,9 @@
+/* 
+  Localizable.strings
+  iComicsReader
+
+  Created by Ivan Pryadchenko on 08/11/2018.
+  Copyright © 2018 MIEM. All rights reserved.
+*/
+"Loading..." = "Loading...";
+"%d of %d" = "%d of %d";

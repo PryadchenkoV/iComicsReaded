@@ -36,37 +36,73 @@ extension UIImage {
     }
 }
 
-class ShowPageViewController: UIViewController, UIScrollViewDelegate, UIGestureRecognizerDelegate {
+struct AppUtility {
+    
+    static func lockOrientation(_ orientation: UIInterfaceOrientationMask) {
+        
+        if let delegate = UIApplication.shared.delegate as? AppDelegate {
+            delegate.orientationLock = orientation
+        }
+    }
+    
+    static func lockOrientation(_ orientation: UIInterfaceOrientationMask, andRotateTo rotateOrientation:UIInterfaceOrientation) {
+        
+        self.lockOrientation(orientation)
+        
+        UIDevice.current.setValue(rotateOrientation.rawValue, forKey: "orientation")
+    }
+    
+}
+
+class ShowPageViewController: UIViewController, UIScrollViewDelegate, UIGestureRecognizerDelegate, UINavigationControllerDelegate {
     
     // MARK: IBOutlet
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var scrollView: UIScrollView!
+    @IBOutlet weak var lockOrientationToolBarItem: UIBarButtonItem!
     
     // MARK: Variables
     var page = 0
+    var isAutorotationUnlocked = true
     var comicsArray = [[String : Any]]() {
         didSet(value) {
             self.comicsArray.sort { ($0["PageNumber"] as! Int) > ($1["PageNumber"] as! Int)}
             guard let data = comicsArray[page]["PageData"] as? Data else { return }
             DispatchQueue.main.async {
+                self.changeTitle()
                 self.imageView.image = UIImage(data: data)
-                self.scrollView.backgroundColor = self.getColorForBackgound()
+                self.view.backgroundColor = self.getColorForBackgound()
             }
         }
     }
+    
+    let unarchiver = Unarchiver.sharedInstance()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         scrollView.delegate = self
         let doubleTapGuest = UITapGestureRecognizer(target: self, action: #selector(handleDoubleTapScrollView(recognizer:)))
         doubleTapGuest.numberOfTapsRequired = 2
+        let singleTapGuest = UITapGestureRecognizer(target: self, action: #selector(handleSingleTapGuesture(recognizer:)))
         scrollView.addGestureRecognizer(doubleTapGuest)
+        scrollView.addGestureRecognizer(singleTapGuest)
+    
+        self.changeTitle()
         
         if let filePath = Bundle.main.path(forResource: "SecretWars00", ofType: "cbr") {
-            let unarchiver = Unarchiver.sharedInstance()
             unarchiver.addObserver(self, forKeyPath: "arrayOfComics", options: [], context: nil)
             unarchiver.readArchive(forPath: filePath)
         }
+        
+        navigationController?.setToolbarHidden(true, animated: true)
+        navigationController?.setNavigationBarHidden(true, animated: true)
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        unarchiver.removeObserver(self, forKeyPath: "arrayOfComics")
+        unarchiver.cancelTask()
+        AppUtility.lockOrientation(.all)
     }
     
     func zoomRectForScale(scale: CGFloat, center: CGPoint) -> CGRect {
@@ -104,12 +140,23 @@ class ShowPageViewController: UIViewController, UIScrollViewDelegate, UIGestureR
     
     // MARK: Usefull functions
     
+    func changeTitle() {
+        var viewTitle = ""
+        if comicsArray.count == 0 {
+            viewTitle = NSLocalizedString("Loading...", comment: "")
+        } else {
+            viewTitle = NSLocalizedString("%d of %d", comment: "")
+        }
+        self.title = String(format: viewTitle, self.page + 1, self.comicsArray.count)
+    }
+    
     func changePageTo(_ page: Int, withTransitionOption option: UIView.AnimationOptions) {
         guard let data = comicsArray[page]["PageData"] as? Data else { return }
         UIView.transition(with: imageView, duration: 0.2, options: option, animations: {
             self.imageView.image = UIImage(data: data)
-            self.scrollView.backgroundColor = self.getColorForBackgound()
+            self.view.backgroundColor = self.getColorForBackgound()
         }, completion: nil)
+        self.changeTitle()
     }
     
     func getColorForBackgound() -> UIColor {
@@ -153,6 +200,30 @@ class ShowPageViewController: UIViewController, UIScrollViewDelegate, UIGestureR
             scrollView.zoom(to: zoomRectForScale(scale: scrollView.maximumZoomScale, center: recognizer.location(in: recognizer.view)), animated: true)
         } else {
             scrollView.setZoomScale(1, animated: true)
+        }
+    }
+    
+    @IBAction func lockOrientationButtonPushed(_ sender: Any) {
+        AppUtility.lockOrientation(.portrait)
+        if isAutorotationUnlocked {
+            lockOrientationToolBarItem.image = #imageLiteral(resourceName: "OrientationUnlock")
+            AppUtility.lockOrientation(.portrait)
+            isAutorotationUnlocked = false
+        } else {
+            lockOrientationToolBarItem.image = #imageLiteral(resourceName: "OrientationLock")
+            AppUtility.lockOrientation(.all)
+            isAutorotationUnlocked = true
+        }
+    }
+    
+    @IBAction func handleSingleTapGuesture(recognizer: UITapGestureRecognizer) {
+        guard let navigationController = navigationController else { return }
+        if navigationController.isToolbarHidden {
+            navigationController.setToolbarHidden(false, animated: true)
+            navigationController.setNavigationBarHidden(false, animated: true)
+        } else {
+            navigationController.setToolbarHidden(true, animated: true)
+            navigationController.setNavigationBarHidden(true, animated: true)
         }
     }
 }

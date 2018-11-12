@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		42AC4DD9CB9F85B1EE60650C /* Pods_iComicsReader.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 10516B7C86BA258028EACBAC /* Pods_iComicsReader.framework */; };
+		E22EE607219390420043C148 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = E22EE605219390420043C148 /* Localizable.strings */; };
 		E245FEC121908A8F000D7F04 /* libarchive.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E245FEC021908A8F000D7F04 /* libarchive.a */; };
 		E245FEC421908AB3000D7F04 /* libbz2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = E245FEC321908AB3000D7F04 /* libbz2.tbd */; };
 		E245FEC621908AB9000D7F04 /* libxml2.2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = E245FEC521908AB9000D7F04 /* libxml2.2.tbd */; };
@@ -41,6 +42,12 @@
 		10516B7C86BA258028EACBAC /* Pods_iComicsReader.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_iComicsReader.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6794FE508FDD331340287FBC /* Pods-iComicsReader.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iComicsReader.debug.xcconfig"; path = "Pods/Target Support Files/Pods-iComicsReader/Pods-iComicsReader.debug.xcconfig"; sourceTree = "<group>"; };
 		9E352A700AE7B6227FE317C9 /* Pods-iComicsReader.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iComicsReader.release.xcconfig"; path = "Pods/Target Support Files/Pods-iComicsReader/Pods-iComicsReader.release.xcconfig"; sourceTree = "<group>"; };
+		E22EE5FF21938E760043C148 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Main.strings; sourceTree = "<group>"; };
+		E22EE606219390420043C148 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
+		E22EE608219390460043C148 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		E22EE609219392AF0043C148 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Main.strings; sourceTree = "<group>"; };
+		E22EE60A219392AF0043C148 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
+		E22EE60B219392AF0043C148 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
 		E245FEC021908A8F000D7F04 /* libarchive.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libarchive.a; sourceTree = "<group>"; };
 		E245FEC321908AB3000D7F04 /* libbz2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libbz2.tbd; path = usr/lib/libbz2.tbd; sourceTree = SDKROOT; };
 		E245FEC521908AB9000D7F04 /* libxml2.2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libxml2.2.tbd; path = usr/lib/libxml2.2.tbd; sourceTree = SDKROOT; };
@@ -155,6 +162,7 @@
 				E29AB733218643C40080D6F5 /* ComicsGetter.swift */,
 				E245FED021908B5E000D7F04 /* ObjC */,
 				E245FED121908B6B000D7F04 /* include */,
+				E22EE605219390420043C148 /* Localizable.strings */,
 			);
 			path = iComicsReader;
 			sourceTree = "<group>";
@@ -204,6 +212,7 @@
 			knownRegions = (
 				en,
 				Base,
+				ru,
 			);
 			mainGroup = E299224D217FBE3200EE2C44;
 			productRefGroup = E2992257217FBE3200EE2C44 /* Products */;
@@ -221,6 +230,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E29AB73221825DFE0080D6F5 /* Scott_Pilgrim_Vol_6.cbz in Resources */,
+				E22EE607219390420043C148 /* Localizable.strings in Resources */,
 				E29AB720217FC84F0080D6F5 /* SecretWars00.cbr in Resources */,
 				E2992264217FBE3400EE2C44 /* LaunchScreen.storyboard in Resources */,
 				E2992261217FBE3400EE2C44 /* Assets.xcassets in Resources */,
@@ -270,10 +280,22 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
+		E22EE605219390420043C148 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				E22EE606219390420043C148 /* Base */,
+				E22EE608219390460043C148 /* en */,
+				E22EE60B219392AF0043C148 /* ru */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
 		E299225D217FBE3200EE2C44 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
 				E299225E217FBE3200EE2C44 /* Base */,
+				E22EE5FF21938E760043C148 /* en */,
+				E22EE609219392AF0043C148 /* ru */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
@@ -282,6 +304,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				E2992263217FBE3400EE2C44 /* Base */,
+				E22EE60A219392AF0043C148 /* ru */,
 			);
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
@@ -293,6 +316,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -354,6 +378,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
