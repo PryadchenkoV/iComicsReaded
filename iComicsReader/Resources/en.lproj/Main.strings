@@ -1,6 +1,28 @@
 
+
+/* Class = "UISegmentedControl"; edN-BS-aVy.segmentTitles[0] = "Light"; ObjectID = "0Wf-Tt-FC6"; */
+"edN-BS-aVy.segmentTitles[0]" = "Light";
+
+/* Class = "UISegmentedControl"; edN-BS-aVy.segmentTitles[1] = "Dark"; ObjectID = "0Wf-Tt-FC6"; */
+"edN-BS-aVy.segmentTitles[1]" = "Dark";
+
+/* Class = "UISegmentedControl"; 0Wf-Tt-FC6.segmentTitles[0] = "White"; ObjectID = "0Wf-Tt-FC6"; */
+"0Wf-Tt-FC6.segmentTitles[0]" = "White";
+
+/* Class = "UISegmentedControl"; 0Wf-Tt-FC6.segmentTitles[1] = "Black"; ObjectID = "0Wf-Tt-FC6"; */
+"0Wf-Tt-FC6.segmentTitles[1]" = "Black";
+
+/* Class = "UISegmentedControl"; 0Wf-Tt-FC6.segmentTitles[2] = "Adaptive"; ObjectID = "0Wf-Tt-FC6"; */
+"0Wf-Tt-FC6.segmentTitles[2]" = "Adaptive";
+
 /* Class = "UIButton"; normalTitle = "Button"; ObjectID = "23R-oG-62V"; */
 "23R-oG-62V.normalTitle" = "Button";
 
-/* Class = "UINavigationItem"; title = "Title"; ObjectID = "A5T-uG-iUm"; */
-"A5T-uG-iUm.title" = "Title";
+/* Class = "UILabel"; text = "Background Color"; ObjectID = "OIY-ap-IAf"; */
+"OIY-ap-IAf.text" = "Background Color";
+
+/* Class = "UILabel"; text = "Theme Color"; ObjectID = "B56-R3-zVK"; */
+"B56-R3-zVK.text" = "Theme Color";
+
+/* Class = "UINavigationItem"; title = "Title"; ObjectID = "nuy-Ko-PB2"; */
+"nuy-Ko-PB2.title" = "Title";

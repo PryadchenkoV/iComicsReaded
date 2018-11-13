@@ -20,7 +20,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        if let bundlePath = Bundle.main.path(forResource: "Preferences", ofType: "plist"),
+            let destPath = NSSearchPathForDirectoriesInDomains(.documentDirectory,
+                                                               .userDomainMask,
+                                                               true).first {
+            let fileName = "Preferences.plist"
+            let fullDestPath = URL(fileURLWithPath: destPath)
+                .appendingPathComponent(fileName)
+            let fullDestPathString = fullDestPath.path
+            
+            if !FileManager.default.fileExists(atPath: fullDestPathString) {
+                do {
+                    try FileManager.default.copyItem(atPath: bundlePath, toPath: fullDestPathString)
+                }
+                catch {
+                    print("Can't copy Preferences.plist to document folder")
+                }
+            }
+        }
         return true
     }
 

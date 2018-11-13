@@ -7,6 +7,17 @@
 //
 import UIKit
 
+let kNotificationNameBackGroundColorChanged: NSNotification.Name = NSNotification.Name(rawValue: "BGColorChanged")
+
+// MARK: Extensions
+
+extension ShowPageViewController: UIPopoverPresentationControllerDelegate {
+    
+    func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
+        return .none
+    }
+}
+
 extension UIImage {
     /// Get the pixel color at a point in the image
     func pixelColor(atLocation point: CGPoint) -> UIColor? {
@@ -42,6 +53,7 @@ class ShowPageViewController: UIViewController, UIScrollViewDelegate, UIGestureR
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var lockOrientationToolBarItem: UIBarButtonItem!
+    @IBOutlet weak var buttonShowMenuPopover: UIBarButtonItem!
     
     // MARK: Variables
     var page = 0
@@ -79,12 +91,15 @@ class ShowPageViewController: UIViewController, UIScrollViewDelegate, UIGestureR
         
         navigationController?.setToolbarHidden(true, animated: true)
         navigationController?.setNavigationBarHidden(true, animated: true)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(setBGColor), name: kNotificationNameBackGroundColorChanged, object: nil)
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         unarchiver.removeObserver(self, forKeyPath: "arrayOfComics")
         unarchiver.cancelTask()
+        NotificationCenter.default.removeObserver(self)
     }
     
     func zoomRectForScale(scale: CGFloat, center: CGPoint) -> CGRect {
@@ -136,33 +151,52 @@ class ShowPageViewController: UIViewController, UIScrollViewDelegate, UIGestureR
         guard let data = comicsArray[page]["PageData"] as? Data else { return }
         UIView.transition(with: imageView, duration: 0.2, options: option, animations: {
             self.imageView.image = UIImage(data: data)
-            self.view.backgroundColor = self.getColorForBackgound()
+            self.setBGColor()
         }, completion: nil)
         self.changeTitle()
     }
     
+    @objc func setBGColor() {
+        self.view.backgroundColor = self.getColorForBackgound()
+    }
+    
     func getColorForBackgound() -> UIColor {
-        guard let imageSize = imageView.image?.size else { return UIColor.white }
-        let arrayOfPoints = [CGPoint(x: 1, y: 1), CGPoint(x: imageSize.width/2.0, y: 1), CGPoint(x: imageSize.width - 1, y: 1), CGPoint(x: 1, y: imageSize.height - 1), CGPoint(x: imageSize.width/2.0, y: imageSize.height - 1), CGPoint(x: imageSize.width - 1, y: imageSize.height - 1)]
-        var arrayOfColors = [UIColor]()
-        for point in arrayOfPoints {
-            if let color = imageView.image?.pixelColor(atLocation: point) {
-                arrayOfColors.append(color)
+        let documentDirectory = FileManager.SearchPathDirectory.documentDirectory
+        let uerDomainMask = FileManager.SearchPathDomainMask.userDomainMask
+        let paths = NSSearchPathForDirectoriesInDomains(documentDirectory, uerDomainMask, true)
+        guard let dirPath = paths.first else { return UIColor.white }
+        let dictionaryInfoPlist = NSDictionary(contentsOfFile: dirPath + "/Preferences.plist")
+        guard let colorNumber = dictionaryInfoPlist?["Comics Background Theme"] as? Int else {
+            return UIColor.white
+        }
+        
+        if colorNumber == 0 {
+            return UIColor.white
+        } else if colorNumber == 1 {
+            return UIColor.black
+        } else {
+            guard let imageSize = imageView.image?.size else { return UIColor.white }
+            let arrayOfPoints = [CGPoint(x: 1, y: 1), CGPoint(x: imageSize.width/2.0, y: 1), CGPoint(x: imageSize.width - 1, y: 1), CGPoint(x: 1, y: imageSize.height - 1), CGPoint(x: imageSize.width/2.0, y: imageSize.height - 1), CGPoint(x: imageSize.width - 1, y: imageSize.height - 1)]
+            var arrayOfColors = [UIColor]()
+            for point in arrayOfPoints {
+                if let color = imageView.image?.pixelColor(atLocation: point) {
+                    arrayOfColors.append(color)
+                }
             }
+            
+            var red: CGFloat = 0.0;
+            var green: CGFloat = 0.0;
+            var blue: CGFloat = 0.0;
+            var alpha: CGFloat = 0.0
+            
+            for color in arrayOfColors {
+                red += CIColor(cgColor: color.cgColor).red
+                green += CIColor(cgColor: color.cgColor).green
+                blue += CIColor(cgColor: color.cgColor).blue
+                alpha += CIColor(cgColor: color.cgColor).alpha
+            }
+            return UIColor(red: red/CGFloat(arrayOfColors.count), green: green/CGFloat(arrayOfColors.count), blue: blue/CGFloat(arrayOfColors.count), alpha: alpha/CGFloat(arrayOfColors.count))
         }
-        
-        var red: CGFloat = 0.0;
-        var green: CGFloat = 0.0;
-        var blue: CGFloat = 0.0;
-        var alpha: CGFloat = 0.0
-        
-        for color in arrayOfColors {
-            red += CIColor(cgColor: color.cgColor).red
-            green += CIColor(cgColor: color.cgColor).green
-            blue += CIColor(cgColor: color.cgColor).blue
-            alpha += CIColor(cgColor: color.cgColor).alpha
-        }
-        return UIColor(red: red/CGFloat(arrayOfColors.count), green: green/CGFloat(arrayOfColors.count), blue: blue/CGFloat(arrayOfColors.count), alpha: alpha/CGFloat(arrayOfColors.count))
     }
     
     func setupCustomBarItem() {
@@ -190,6 +224,20 @@ class ShowPageViewController: UIViewController, UIScrollViewDelegate, UIGestureR
         } else {
             scrollView.setZoomScale(1, animated: true)
         }
+    }
+    
+    @IBAction func showMenuPopover(_ sender: Any) {
+        guard let popVC = storyboard?.instantiateViewController(withIdentifier: "PopoverComicsSettings") else { return }
+        popVC.modalPresentationStyle = .popover
+        
+        let popOverVC = popVC.popoverPresentationController
+        popOverVC?.delegate = self
+//        popOverVC?.sourceView = buttonView
+//        popOverVC?.sourceRect = CGRect(x: buttonView.bounds.midX, y: buttonView.bounds.minY, width: 0, height: 0)
+        popOverVC?.barButtonItem = buttonShowMenuPopover
+        popOverVC?.permittedArrowDirections = .up
+        
+        self.present(popVC, animated: true)
     }
     
     @IBAction func lockOrientationButtonPushed(_ sender: Any) {
@@ -225,4 +273,3 @@ class ShowPageViewController: UIViewController, UIScrollViewDelegate, UIGestureR
         }
     }
 }
-

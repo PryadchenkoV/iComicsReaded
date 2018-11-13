@@ -4,6 +4,7 @@
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -103,10 +104,17 @@
                                 <action selector="lockOrientationButtonPushed:" destination="BYZ-38-t0r" id="A6Q-3Z-YXd"/>
                             </connections>
                         </barButtonItem>
+                        <barButtonItem systemItem="flexibleSpace" id="fUQ-kl-jYm"/>
+                        <barButtonItem image="Settings" id="gil-96-l9f">
+                            <connections>
+                                <action selector="showMenuPopover:" destination="BYZ-38-t0r" id="AEQ-ai-Icy"/>
+                            </connections>
+                        </barButtonItem>
                     </toolbarItems>
                     <navigationItem key="navigationItem" title="Title" id="nuy-Ko-PB2"/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
+                        <outlet property="buttonShowMenuPopover" destination="gil-96-l9f" id="rhi-gP-HaW"/>
                         <outlet property="imageView" destination="dEj-zh-Gvz" id="xGY-9P-suN"/>
                         <outlet property="lockOrientationToolBarItem" destination="hUY-jB-gbo" id="3gl-20-F4u"/>
                         <outlet property="scrollView" destination="KLp-1i-fEb" id="SYI-hP-Iir"/>
@@ -115,6 +123,71 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="962.31884057971024" y="26.116071428571427"/>
+        </scene>
+        <!--Popover Menu View Controller-->
+        <scene sceneID="0RO-pA-EL1">
+            <objects>
+                <viewController storyboardIdentifier="PopoverComicsSettings" modalPresentationStyle="pageSheet" id="09z-yO-F3j" customClass="PopoverMenuViewController" customModule="iComicsReader" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="pF9-Zn-kyH">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="0Wf-Tt-FC6">
+                                <rect key="frame" x="20" y="85" width="374" height="29"/>
+                                <segments>
+                                    <segment title="White"/>
+                                    <segment title="Black"/>
+                                    <segment title="Adaptive"/>
+                                </segments>
+                                <connections>
+                                    <action selector="segmentControlBGColorPushed:" destination="09z-yO-F3j" eventType="valueChanged" id="ZOY-eJ-hcJ"/>
+                                </connections>
+                            </segmentedControl>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Background Color" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OIY-ap-IAf">
+                                <rect key="frame" x="135" y="54" width="144" height="21"/>
+                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Theme Color" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="B56-R3-zVK">
+                                <rect key="frame" x="155.66666666666666" y="143" width="102.99999999999997" height="21"/>
+                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="edN-BS-aVy">
+                                <rect key="frame" x="20" y="174" width="374" height="29"/>
+                                <segments>
+                                    <segment title="Light"/>
+                                    <segment title="Dark"/>
+                                </segments>
+                            </segmentedControl>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="OIY-ap-IAf" firstAttribute="top" secondItem="7GG-v3-JRg" secondAttribute="top" constant="10" id="1ai-rC-iXj"/>
+                            <constraint firstItem="0Wf-Tt-FC6" firstAttribute="leading" secondItem="7GG-v3-JRg" secondAttribute="leading" constant="20" id="1l3-MV-HOh"/>
+                            <constraint firstItem="OIY-ap-IAf" firstAttribute="centerX" secondItem="pF9-Zn-kyH" secondAttribute="centerX" id="2wB-Ca-1pg"/>
+                            <constraint firstItem="B56-R3-zVK" firstAttribute="centerX" secondItem="pF9-Zn-kyH" secondAttribute="centerX" id="OE8-du-C8C"/>
+                            <constraint firstItem="B56-R3-zVK" firstAttribute="top" secondItem="0Wf-Tt-FC6" secondAttribute="bottom" constant="30" id="adi-G1-uDx"/>
+                            <constraint firstItem="edN-BS-aVy" firstAttribute="top" secondItem="B56-R3-zVK" secondAttribute="bottom" constant="10" id="d1P-F6-jfR"/>
+                            <constraint firstItem="7GG-v3-JRg" firstAttribute="trailing" secondItem="edN-BS-aVy" secondAttribute="trailing" constant="20" id="d8H-HJ-tto"/>
+                            <constraint firstItem="edN-BS-aVy" firstAttribute="leading" secondItem="7GG-v3-JRg" secondAttribute="leading" constant="20" id="lTc-Ki-Rrq"/>
+                            <constraint firstItem="0Wf-Tt-FC6" firstAttribute="top" secondItem="OIY-ap-IAf" secondAttribute="bottom" constant="10" id="uFh-aO-ejk"/>
+                            <constraint firstItem="7GG-v3-JRg" firstAttribute="trailing" secondItem="0Wf-Tt-FC6" secondAttribute="trailing" constant="20" id="viV-mM-ddf"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="7GG-v3-JRg"/>
+                    </view>
+                    <extendedEdge key="edgesForExtendedLayout"/>
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <size key="freeformSize" width="414" height="896"/>
+                    <connections>
+                        <outlet property="segmentedControllerBGColor" destination="0Wf-Tt-FC6" id="1Vh-eC-wwh"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="xNB-1O-9h0" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1609" y="26"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="fue-aS-icg">
@@ -139,4 +212,7 @@
             <point key="canvasLocation" x="-760.86956521739137" y="25.446428571428569"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="Settings" width="90" height="90"/>
+    </resources>
 </document>
