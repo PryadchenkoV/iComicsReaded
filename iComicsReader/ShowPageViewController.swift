@@ -60,6 +60,10 @@ class ShowPageViewController: UIViewController, UIScrollViewDelegate, UIGestureR
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var lockOrientationToolBarItem: UIBarButtonItem!
+    @IBOutlet var customViewForButton: UIView!
+    
+    var imageRotation: UIImageView!
+    var imageLockUnlock: UIImageView!
     
     // MARK: Variables
     var page = 0
@@ -88,6 +92,7 @@ class ShowPageViewController: UIViewController, UIScrollViewDelegate, UIGestureR
         scrollView.addGestureRecognizer(singleTapGuest)
     
         self.changeTitle()
+        self.setupCustomBarItem()
         
         if let filePath = Bundle.main.path(forResource: "SecretWars00", ofType: "cbr") {
             unarchiver.addObserver(self, forKeyPath: "arrayOfComics", options: [], context: nil)
@@ -181,6 +186,18 @@ class ShowPageViewController: UIViewController, UIScrollViewDelegate, UIGestureR
             alpha += CIColor(cgColor: color.cgColor).alpha
         }
         return UIColor(red: red/CGFloat(arrayOfColors.count), green: green/CGFloat(arrayOfColors.count), blue: blue/CGFloat(arrayOfColors.count), alpha: alpha/CGFloat(arrayOfColors.count))
+    }
+    
+    func setupCustomBarItem() {
+//        imageRotation = UIImageView(image: #imageLiteral(resourceName: "Rotation"))
+//        imageRotation.frame = CGRect(x: 0, y: 0, width: 32, height: 32)
+//        imageLockUnlock = UIImageView(image: #imageLiteral(resourceName: "Unlock"))
+//        imageLockUnlock.frame = CGRect(x: 8, y: 8, width: 16, height: 16)
+//        let view = UIView(frame: CGRect(x: 0, y: 0, width: 64, height: 64))
+//        view.addSubview(imageRotation)
+//        view.addSubview(imageLockUnlock)
+        lockOrientationToolBarItem.customView = LockOrientationBarButton()
+//        lockOrientationToolBarItem.
     }
     
     // MARK: IBActions

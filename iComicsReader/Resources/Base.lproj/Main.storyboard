@@ -98,17 +98,13 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <toolbarItems>
-                        <barButtonItem image="OrientationLock" id="hUY-jB-gbo">
-                            <connections>
-                                <action selector="lockOrientationButtonPushed:" destination="BYZ-38-t0r" id="l9d-mX-AsL"/>
-                            </connections>
-                        </barButtonItem>
+                        <barButtonItem id="hUY-jB-gbo"/>
                     </toolbarItems>
                     <navigationItem key="navigationItem" title="Title" id="nuy-Ko-PB2"/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="imageView" destination="dEj-zh-Gvz" id="xGY-9P-suN"/>
-                        <outlet property="lockOrientationToolBarItem" destination="hUY-jB-gbo" id="FZd-Gs-2m2"/>
+                        <outlet property="lockOrientationToolBarItem" destination="hUY-jB-gbo" id="3gl-20-F4u"/>
                         <outlet property="scrollView" destination="KLp-1i-fEb" id="SYI-hP-Iir"/>
                     </connections>
                 </viewController>
@@ -139,7 +135,4 @@
             <point key="canvasLocation" x="-760.86956521739137" y="25.446428571428569"/>
         </scene>
     </scenes>
-    <resources>
-        <image name="OrientationLock" width="67.5" height="67.5"/>
-    </resources>
 </document>
