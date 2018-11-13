@@ -81,20 +81,70 @@
                                     <action selector="changePageToNext:" destination="BYZ-38-t0r" eventType="touchUpInside" id="yXg-TO-ztH"/>
                                 </connections>
                             </button>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="q7n-xg-E2q">
+                                <rect key="frame" x="0.0" y="773" width="414" height="40"/>
+                                <subviews>
+                                    <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qzq-YA-XlL">
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="40"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="sme-6I-zhM">
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="40"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                            <subviews>
+                                                <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="30" translatesAutoresizingMaskIntoConstraints="NO" id="g83-AY-Dpg">
+                                                    <rect key="frame" x="48" y="5" width="318" height="31"/>
+                                                    <color key="minimumTrackTintColor" red="0.016804177310000001" green="0.19835099580000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <color key="maximumTrackTintColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <connections>
+                                                        <action selector="changeSliderValue:" destination="BYZ-38-t0r" eventType="valueChanged" id="ok9-7G-Ns2"/>
+                                                    </connections>
+                                                </slider>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="trailing" secondItem="g83-AY-Dpg" secondAttribute="trailing" constant="50" id="AnM-gF-xhM"/>
+                                                <constraint firstItem="g83-AY-Dpg" firstAttribute="centerY" secondItem="sme-6I-zhM" secondAttribute="centerY" id="Fnb-pt-tHd"/>
+                                                <constraint firstItem="g83-AY-Dpg" firstAttribute="leading" secondItem="sme-6I-zhM" secondAttribute="leading" constant="50" id="mkz-qX-Zug"/>
+                                            </constraints>
+                                        </view>
+                                        <vibrancyEffect>
+                                            <blurEffect style="regular"/>
+                                        </vibrancyEffect>
+                                    </visualEffectView>
+                                </subviews>
+                                <color key="backgroundColor" red="0.96470588235294119" green="0.96470588235294119" blue="0.96470588235294119" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="tintColor" cocoaTouchSystemColor="tableCellGroupedBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="qzq-YA-XlL" secondAttribute="bottom" id="26x-sd-iAT"/>
+                                    <constraint firstItem="qzq-YA-XlL" firstAttribute="top" secondItem="q7n-xg-E2q" secondAttribute="top" id="4dl-wW-liQ"/>
+                                    <constraint firstItem="qzq-YA-XlL" firstAttribute="leading" secondItem="q7n-xg-E2q" secondAttribute="leading" id="Keb-8c-iRT"/>
+                                    <constraint firstAttribute="height" constant="40" id="bcX-Ek-H0d"/>
+                                    <constraint firstAttribute="trailing" secondItem="qzq-YA-XlL" secondAttribute="trailing" id="zE8-ju-1fu"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
+                                        <integer key="value" value="1"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="layer.borderColor">
+                                        <color key="value" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="KLp-1i-fEb" secondAttribute="trailing" id="8XT-SE-Aam"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="top" secondItem="Uoa-fQ-Wai" secondAttribute="top" id="AGc-cd-qKQ"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="Uoa-fQ-Wai" secondAttribute="bottom" id="BNT-id-NUo"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="q7n-xg-E2q" secondAttribute="trailing" id="E4H-nh-UzR"/>
                             <constraint firstAttribute="bottom" secondItem="KLp-1i-fEb" secondAttribute="bottom" id="UPY-fC-LAS"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="mG8-Pb-zwb" secondAttribute="bottom" id="WGx-7u-xCA"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="Uoa-fQ-Wai" secondAttribute="trailing" id="Yvf-w6-s6V"/>
                             <constraint firstItem="mG8-Pb-zwb" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="alz-li-IC0"/>
                             <constraint firstItem="mG8-Pb-zwb" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="dEE-Ra-70l"/>
                             <constraint firstItem="mG8-Pb-zwb" firstAttribute="width" secondItem="Uoa-fQ-Wai" secondAttribute="width" id="gui-oS-exs"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="q7n-xg-E2q" secondAttribute="bottom" id="pKb-tM-Nnq"/>
                             <constraint firstItem="KLp-1i-fEb" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="ruU-kc-Mbz"/>
                             <constraint firstItem="KLp-1i-fEb" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="ufu-Io-PnS"/>
+                            <constraint firstItem="q7n-xg-E2q" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="vhj-sv-Smt"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
@@ -102,6 +152,12 @@
                         <barButtonItem id="hUY-jB-gbo">
                             <connections>
                                 <action selector="lockOrientationButtonPushed:" destination="BYZ-38-t0r" id="A6Q-3Z-YXd"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="Mfu-tJ-Zou"/>
+                        <barButtonItem image="SliderShow" id="FJ8-Jk-j5U">
+                            <connections>
+                                <action selector="showSliderButtonPushed:" destination="BYZ-38-t0r" id="6QA-7Z-sKv"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem systemItem="flexibleSpace" id="fUQ-kl-jYm"/>
@@ -114,10 +170,14 @@
                     <navigationItem key="navigationItem" title="Title" id="nuy-Ko-PB2"/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
+                        <outlet property="barButtonSliderShow" destination="FJ8-Jk-j5U" id="0WO-s2-06m"/>
                         <outlet property="buttonShowMenuPopover" destination="gil-96-l9f" id="rhi-gP-HaW"/>
                         <outlet property="imageView" destination="dEj-zh-Gvz" id="xGY-9P-suN"/>
                         <outlet property="lockOrientationToolBarItem" destination="hUY-jB-gbo" id="3gl-20-F4u"/>
                         <outlet property="scrollView" destination="KLp-1i-fEb" id="SYI-hP-Iir"/>
+                        <outlet property="sliderChangePage" destination="g83-AY-Dpg" id="BLg-MJ-LYO"/>
+                        <outlet property="sliderViewHeight" destination="bcX-Ek-H0d" id="9TY-xJ-gva"/>
+                        <outlet property="viewWithSlider" destination="q7n-xg-E2q" id="ym6-63-Rtt"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -214,5 +274,6 @@
     </scenes>
     <resources>
         <image name="Settings" width="90" height="90"/>
+        <image name="SliderShow" width="67.5" height="67.5"/>
     </resources>
 </document>

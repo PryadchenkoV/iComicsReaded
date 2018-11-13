@@ -53,7 +53,11 @@ class ShowPageViewController: UIViewController, UIScrollViewDelegate, UIGestureR
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var lockOrientationToolBarItem: UIBarButtonItem!
+    @IBOutlet weak var sliderChangePage: UISlider!
     @IBOutlet weak var buttonShowMenuPopover: UIBarButtonItem!
+    @IBOutlet weak var barButtonSliderShow: UIBarButtonItem!
+    @IBOutlet weak var sliderViewHeight: NSLayoutConstraint!
+    @IBOutlet weak var viewWithSlider: UIView!
     
     // MARK: Variables
     var page = 0
@@ -66,6 +70,9 @@ class ShowPageViewController: UIViewController, UIScrollViewDelegate, UIGestureR
                 self.changeTitle()
                 self.imageView.image = UIImage(data: data)
                 self.view.backgroundColor = self.getColorForBackgound()
+                self.sliderChangePage.minimumValue = 0.0
+//                self.sliderChangePage.setValue(1.0, animated: true)
+                self.sliderChangePage.maximumValue = Float(self.comicsArray.count - 1)
             }
         }
     }
@@ -89,10 +96,14 @@ class ShowPageViewController: UIViewController, UIScrollViewDelegate, UIGestureR
             unarchiver.readArchive(forPath: filePath)
         }
         
+        sliderViewHeight.constant = 0
+        
         navigationController?.setToolbarHidden(true, animated: true)
         navigationController?.setNavigationBarHidden(true, animated: true)
         
         NotificationCenter.default.addObserver(self, selector: #selector(setBGColor), name: kNotificationNameBackGroundColorChanged, object: nil)
+        
+        self.navigationController?.addObserver(self, forKeyPath: "isToolbarHidden", options: .new, context: nil)
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -100,6 +111,7 @@ class ShowPageViewController: UIViewController, UIScrollViewDelegate, UIGestureR
         unarchiver.removeObserver(self, forKeyPath: "arrayOfComics")
         unarchiver.cancelTask()
         NotificationCenter.default.removeObserver(self)
+        self.navigationController!.removeObserver(self, forKeyPath: "isToolbarHidden")
     }
     
     func zoomRectForScale(scale: CGFloat, center: CGPoint) -> CGRect {
@@ -129,7 +141,8 @@ class ShowPageViewController: UIViewController, UIScrollViewDelegate, UIGestureR
         {
             guard let archive = Unarchiver.sharedInstance().arrayOfComics as? [[String : Any]] else { return }
             comicsArray = archive
-            
+        } else if keyPath == "isToolbarHidden" {
+            print("YE")
         } else {
             super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
         }
@@ -147,8 +160,11 @@ class ShowPageViewController: UIViewController, UIScrollViewDelegate, UIGestureR
         self.title = String(format: viewTitle, self.page + 1, self.comicsArray.count)
     }
     
-    func changePageTo(_ page: Int, withTransitionOption option: UIView.AnimationOptions) {
+    func changePageTo(_ page: Int, withTransitionOption option: UIView.AnimationOptions = [.transitionCrossDissolve, .curveEaseInOut]) {
         guard let data = comicsArray[page]["PageData"] as? Data else { return }
+        DispatchQueue.main.async {
+            self.sliderChangePage.setValue(Float(page), animated: true)
+        }
         UIView.transition(with: imageView, duration: 0.2, options: option, animations: {
             self.imageView.image = UIImage(data: data)
             self.setBGColor()
@@ -213,6 +229,11 @@ class ShowPageViewController: UIViewController, UIScrollViewDelegate, UIGestureR
         changePageTo(page, withTransitionOption: [.transitionCrossDissolve, .curveEaseInOut])
     }
     
+    @IBAction func changeSliderValue(_ sender: Any) {
+        page = Int(sliderChangePage.value)
+        self.changePageTo(page)
+    }
+    
     @IBAction func changePageToPrevious(_ sender: Any) {
         page = page > 0 ? page - 1 : 0
         changePageTo(page, withTransitionOption: [.transitionCrossDissolve, .curveEaseInOut])
@@ -224,6 +245,26 @@ class ShowPageViewController: UIViewController, UIScrollViewDelegate, UIGestureR
         } else {
             scrollView.setZoomScale(1, animated: true)
         }
+    }
+    @IBAction func showSliderButtonPushed(_ sender: Any) {
+        if self.sliderViewHeight.constant == 0 {
+            self.sliderViewHeight.constant = 40
+        } else {
+            self.sliderViewHeight.constant = 0
+        }
+        UIView.animate(withDuration: 0.2, delay: 0.0, options: .curveEaseInOut, animations: {
+            self.view.layoutIfNeeded()
+        }, completion: nil)
+        guard let barButtonView = self.barButtonSliderShow.value(forKey: "view") as? UIView else {
+            return
+        }
+        UIView.transition(with: barButtonView, duration: 0.2, options: .transitionCrossDissolve, animations: {
+            if self.sliderViewHeight.constant == 0 {
+                self.barButtonSliderShow.image = #imageLiteral(resourceName: "SliderShow")
+            } else {
+                self.barButtonSliderShow.image = #imageLiteral(resourceName: "Hide")
+            }
+        }, completion: nil)
     }
     
     @IBAction func showMenuPopover(_ sender: Any) {
@@ -264,12 +305,27 @@ class ShowPageViewController: UIViewController, UIScrollViewDelegate, UIGestureR
     
     @IBAction func handleSingleTapGuesture(recognizer: UITapGestureRecognizer) {
         guard let navigationController = navigationController else { return }
+        
         if navigationController.isToolbarHidden {
             navigationController.setToolbarHidden(false, animated: true)
             navigationController.setNavigationBarHidden(false, animated: true)
         } else {
             navigationController.setToolbarHidden(true, animated: true)
             navigationController.setNavigationBarHidden(true, animated: true)
+            self.sliderViewHeight.constant = 0
         }
+        UIView.animate(withDuration: 0.1, delay: 0.0, options: .curveEaseInOut, animations: {
+            self.view.layoutIfNeeded()
+        }, completion: nil)
+        guard let barButtonView = self.barButtonSliderShow.value(forKey: "view") as? UIView else {
+            return
+        }
+        UIView.transition(with: barButtonView, duration: 0.2, options: .transitionCrossDissolve, animations: {
+            if self.sliderViewHeight.constant == 0 {
+                self.barButtonSliderShow.image = #imageLiteral(resourceName: "SliderShow")
+            } else {
+                self.barButtonSliderShow.image = #imageLiteral(resourceName: "Hide")
+            }
+        }, completion: nil)
     }
 }
