@@ -14,12 +14,13 @@ class LockOrientationBarButton: UIButton {
     var imageLockUnlock: UIImageView!
     var customView: UIView!
     var isUnlock = true
+    var blockToExecute: (() -> ())?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         imageRotation = UIImageView(image: #imageLiteral(resourceName: "Rotation"))
         imageRotation.frame = CGRect(x: 0, y: 0, width: 32, height: 32)
-        imageRotation.transform = imageRotation.transform.rotated(by: CGFloat(Double.pi / 4))
+//        imageRotation.transform = imageRotation.transform.rotated(by: CGFloat(Double.pi / 4))
         imageLockUnlock = UIImageView(image: #imageLiteral(resourceName: "Unlock"))
         imageLockUnlock.frame = CGRect(x: 8, y: 8, width: 16, height: 16)
         self.addSubview(imageRotation)
@@ -27,8 +28,9 @@ class LockOrientationBarButton: UIButton {
         self.addTarget(self, action: #selector(buttonPressed), for: .touchUpInside)
     }
     
-    convenience init() {
+    convenience init(withAction action: @escaping () -> ()) {
         self.init(frame: CGRect(x: 0, y: 0, width: 32, height: 32))
+        blockToExecute = action
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -51,6 +53,7 @@ class LockOrientationBarButton: UIButton {
                 self.imageRotation.tintColor = nil
             }
         }, completion: { _ in self.isUnlock = !self.isUnlock})
+        blockToExecute?()
     }
     
     

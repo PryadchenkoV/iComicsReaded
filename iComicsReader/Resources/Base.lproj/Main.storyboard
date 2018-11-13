@@ -98,7 +98,11 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <toolbarItems>
-                        <barButtonItem id="hUY-jB-gbo"/>
+                        <barButtonItem id="hUY-jB-gbo">
+                            <connections>
+                                <action selector="lockOrientationButtonPushed:" destination="BYZ-38-t0r" id="A6Q-3Z-YXd"/>
+                            </connections>
+                        </barButtonItem>
                     </toolbarItems>
                     <navigationItem key="navigationItem" title="Title" id="nuy-Ko-PB2"/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>

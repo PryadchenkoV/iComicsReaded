@@ -36,34 +36,12 @@ extension UIImage {
     }
 }
 
-struct AppUtility {
-    
-    static func lockOrientation(_ orientation: UIInterfaceOrientationMask) {
-        
-        if let delegate = UIApplication.shared.delegate as? AppDelegate {
-            delegate.orientationLock = orientation
-        }
-    }
-    
-    static func lockOrientation(_ orientation: UIInterfaceOrientationMask, andRotateTo rotateOrientation:UIInterfaceOrientation) {
-        
-        self.lockOrientation(orientation)
-        
-        UIDevice.current.setValue(rotateOrientation.rawValue, forKey: "orientation")
-    }
-    
-}
-
 class ShowPageViewController: UIViewController, UIScrollViewDelegate, UIGestureRecognizerDelegate, UINavigationControllerDelegate {
     
     // MARK: IBOutlet
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var lockOrientationToolBarItem: UIBarButtonItem!
-    @IBOutlet var customViewForButton: UIView!
-    
-    var imageRotation: UIImageView!
-    var imageLockUnlock: UIImageView!
     
     // MARK: Variables
     var page = 0
@@ -107,7 +85,6 @@ class ShowPageViewController: UIViewController, UIScrollViewDelegate, UIGestureR
         super.viewWillDisappear(animated)
         unarchiver.removeObserver(self, forKeyPath: "arrayOfComics")
         unarchiver.cancelTask()
-        AppUtility.lockOrientation(.all)
     }
     
     func zoomRectForScale(scale: CGFloat, center: CGPoint) -> CGRect {
@@ -189,15 +166,10 @@ class ShowPageViewController: UIViewController, UIScrollViewDelegate, UIGestureR
     }
     
     func setupCustomBarItem() {
-//        imageRotation = UIImageView(image: #imageLiteral(resourceName: "Rotation"))
-//        imageRotation.frame = CGRect(x: 0, y: 0, width: 32, height: 32)
-//        imageLockUnlock = UIImageView(image: #imageLiteral(resourceName: "Unlock"))
-//        imageLockUnlock.frame = CGRect(x: 8, y: 8, width: 16, height: 16)
-//        let view = UIView(frame: CGRect(x: 0, y: 0, width: 64, height: 64))
-//        view.addSubview(imageRotation)
-//        view.addSubview(imageLockUnlock)
-        lockOrientationToolBarItem.customView = LockOrientationBarButton()
-//        lockOrientationToolBarItem.
+        lockOrientationToolBarItem.customView = LockOrientationBarButton(withAction: {
+            self.isAutorotationUnlocked = !self.isAutorotationUnlocked
+            self.lockOrientationButtonPushed(self)
+        })
     }
     
     // MARK: IBActions
@@ -221,16 +193,25 @@ class ShowPageViewController: UIViewController, UIScrollViewDelegate, UIGestureR
     }
     
     @IBAction func lockOrientationButtonPushed(_ sender: Any) {
-        AppUtility.lockOrientation(.portrait)
-        if isAutorotationUnlocked {
-            lockOrientationToolBarItem.image = #imageLiteral(resourceName: "OrientationUnlock")
-            AppUtility.lockOrientation(.portrait)
-            isAutorotationUnlocked = false
-        } else {
-            lockOrientationToolBarItem.image = #imageLiteral(resourceName: "OrientationLock")
-            AppUtility.lockOrientation(.all)
-            isAutorotationUnlocked = true
+        guard let delegate = UIApplication.shared.delegate as? AppDelegate else {
+            return
         }
+        var uiViewOrientation = UIInterfaceOrientationMask.all
+        if !isAutorotationUnlocked {
+            switch UIDevice.current.orientation {
+            case .portrait:
+                uiViewOrientation = .portrait
+            case .portraitUpsideDown:
+                uiViewOrientation = .portraitUpsideDown
+            case .landscapeLeft:
+                uiViewOrientation = .landscapeLeft
+            case .landscapeRight:
+                uiViewOrientation = .landscapeRight
+            default:
+                uiViewOrientation = delegate.restrictRotation
+            }
+        }
+        delegate.restrictRotation = uiViewOrientation
     }
     
     @IBAction func handleSingleTapGuesture(recognizer: UITapGestureRecognizer) {
