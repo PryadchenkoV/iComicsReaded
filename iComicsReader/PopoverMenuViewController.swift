@@ -26,6 +26,12 @@ class PopoverMenuViewController: UIViewController {
         if let colorNumber = dictionaryPreferencesPlist["Comics Background Theme"] as? Int {
             segmentedControllerBGColor.selectedSegmentIndex = colorNumber
         }
+//        let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.prominent)
+//        let blurEffectView = UIVisualEffectView(effect: blurEffect)
+//        blurEffectView.frame = view.bounds
+//        blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+//        view.addSubview(blurEffectView)
+//        view.sendSubviewToBack(blurEffectView)
         // Do any additional setup after loading the view.
     }
     

@@ -16,6 +16,12 @@ extension ShowPageViewController: UIPopoverPresentationControllerDelegate {
     func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
         return .none
     }
+    
+    func popoverPresentationControllerDidDismissPopover(_ popoverPresentationController: UIPopoverPresentationController) {
+        UIView.animate(withDuration: 0.15, delay: 0.0, options: .curveEaseInOut, animations: {
+            self.buttonShowMenuPopover.customView?.transform = CGAffineTransform(rotationAngle: 0)
+        })
+    }
 }
 
 extension UIImage {
@@ -220,6 +226,12 @@ class ShowPageViewController: UIViewController, UIScrollViewDelegate, UIGestureR
             self.isAutorotationUnlocked = !self.isAutorotationUnlocked
             self.lockOrientationButtonPushed(self)
         })
+        
+        let moreInfoButton = UIButton(type: .system)
+        moreInfoButton.setImage(#imageLiteral(resourceName: "DotBurger"), for: .normal)
+        moreInfoButton.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
+        moreInfoButton.addTarget(self, action: #selector(showMenuPopover(_:)), for: .touchUpInside)
+        buttonShowMenuPopover.customView = moreInfoButton
     }
     
     // MARK: IBActions
@@ -270,13 +282,18 @@ class ShowPageViewController: UIViewController, UIScrollViewDelegate, UIGestureR
     @IBAction func showMenuPopover(_ sender: Any) {
         guard let popVC = storyboard?.instantiateViewController(withIdentifier: "PopoverComicsSettings") else { return }
         popVC.modalPresentationStyle = .popover
-        
+
         let popOverVC = popVC.popoverPresentationController
         popOverVC?.delegate = self
-//        popOverVC?.sourceView = buttonView
-//        popOverVC?.sourceRect = CGRect(x: buttonView.bounds.midX, y: buttonView.bounds.minY, width: 0, height: 0)
+        popOverVC?.sourceView = buttonShowMenuPopover.customView
+        popOverVC?.sourceRect = CGRect(x: (buttonShowMenuPopover.customView?.bounds.midX)!, y: (buttonShowMenuPopover.customView?.bounds.minY)!, width: 0, height: 0)
         popOverVC?.barButtonItem = buttonShowMenuPopover
         popOverVC?.permittedArrowDirections = .up
+        popVC.preferredContentSize = CGSize(width: 350, height: 300)
+        
+        UIView.animate(withDuration: 0.15, delay: 0.0, options: .curveEaseInOut, animations: {
+            self.buttonShowMenuPopover.customView?.transform = CGAffineTransform(rotationAngle: 90 * .pi / 180)
+        })
         
         self.present(popVC, animated: true)
     }
