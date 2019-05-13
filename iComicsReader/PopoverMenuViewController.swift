@@ -11,9 +11,12 @@ import UIKit
 class PopoverMenuViewController: UIViewController {
 
     @IBOutlet weak var segmentedControllerBGColor: UISegmentedControl!
+    @IBOutlet weak var mangaModeSwitch: UISwitch!
     
     var dictionaryPreferencesPlist: NSMutableDictionary!
+    var dictionaryComicsPreferencesPlist: NSMutableDictionary!
     var filePreferencesPath = ""
+    var comicsName = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,6 +26,7 @@ class PopoverMenuViewController: UIViewController {
         guard let dirPath = paths.first else { return }
         filePreferencesPath = dirPath + "/Preferences.plist"
         dictionaryPreferencesPlist = NSMutableDictionary(contentsOfFile: filePreferencesPath)
+        
         if let colorNumber = dictionaryPreferencesPlist["Comics Background Theme"] as? Int {
             segmentedControllerBGColor.selectedSegmentIndex = colorNumber
         }

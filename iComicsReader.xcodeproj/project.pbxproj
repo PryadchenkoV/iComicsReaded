@@ -18,6 +18,10 @@
 		E245FEC821908AC1000D7F04 /* libz.1.1.3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = E245FEC721908AC1000D7F04 /* libz.1.1.3.tbd */; };
 		E245FECA21908AC9000D7F04 /* libiconv.2.4.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = E245FEC921908AC8000D7F04 /* libiconv.2.4.0.tbd */; };
 		E245FECE21908B02000D7F04 /* Unarchiver.mm in Sources */ = {isa = PBXBuildFile; fileRef = E245FECD21908B02000D7F04 /* Unarchiver.mm */; };
+		E259B014225D33DC003AE2D8 /* MangaWesternClassifier.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = E259B013225D33DC003AE2D8 /* MangaWesternClassifier.mlmodel */; };
+		E259B019225E7A59003AE2D8 /* ComicData.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E259B017225E7A59003AE2D8 /* ComicData.xcdatamodeld */; };
+		E259B01B225E7D1F003AE2D8 /* MainCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E259B01A225E7D1F003AE2D8 /* MainCollectionViewController.swift */; };
+		E259B01D225E7F4C003AE2D8 /* ComiscCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E259B01C225E7F4C003AE2D8 /* ComiscCollectionViewCell.swift */; };
 		E299225A217FBE3200EE2C44 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2992259217FBE3200EE2C44 /* AppDelegate.swift */; };
 		E299225C217FBE3200EE2C44 /* ShowPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E299225B217FBE3200EE2C44 /* ShowPageViewController.swift */; };
 		E299225F217FBE3200EE2C44 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E299225D217FBE3200EE2C44 /* Main.storyboard */; };
@@ -64,6 +68,10 @@
 		E245FECD21908B02000D7F04 /* Unarchiver.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = Unarchiver.mm; sourceTree = "<group>"; };
 		E245FED221908C9C000D7F04 /* archive.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = archive.h; sourceTree = "<group>"; };
 		E245FED321908C9C000D7F04 /* archive_entry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = archive_entry.h; sourceTree = "<group>"; };
+		E259B013225D33DC003AE2D8 /* MangaWesternClassifier.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = MangaWesternClassifier.mlmodel; sourceTree = "<group>"; };
+		E259B018225E7A59003AE2D8 /* ComicData.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ComicData.xcdatamodel; sourceTree = "<group>"; };
+		E259B01A225E7D1F003AE2D8 /* MainCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCollectionViewController.swift; sourceTree = "<group>"; };
+		E259B01C225E7F4C003AE2D8 /* ComiscCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComiscCollectionViewCell.swift; sourceTree = "<group>"; };
 		E2992256217FBE3200EE2C44 /* iComicsReader.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iComicsReader.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E2992259217FBE3200EE2C44 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E299225B217FBE3200EE2C44 /* ShowPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowPageViewController.swift; sourceTree = "<group>"; };
@@ -120,6 +128,7 @@
 		E204BB48219A1914005A5652 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				E259B013225D33DC003AE2D8 /* MangaWesternClassifier.mlmodel */,
 				E299225D217FBE3200EE2C44 /* Main.storyboard */,
 				E2992260217FBE3400EE2C44 /* Assets.xcassets */,
 				E2992262217FBE3400EE2C44 /* LaunchScreen.storyboard */,
@@ -168,6 +177,7 @@
 			isa = PBXGroup;
 			children = (
 				E2992259217FBE3200EE2C44 /* AppDelegate.swift */,
+				E259B01A225E7D1F003AE2D8 /* MainCollectionViewController.swift */,
 				E299225B217FBE3200EE2C44 /* ShowPageViewController.swift */,
 				E204BB48219A1914005A5652 /* Resources */,
 				E2992265217FBE3400EE2C44 /* Info.plist */,
@@ -180,6 +190,8 @@
 				E204BB4B219A1D65005A5652 /* LockOrientationBarButton.swift */,
 				E204BB53219B3222005A5652 /* PopoverMenuViewController.swift */,
 				E225F9ED219B378400C1BAD5 /* Preferences.plist */,
+				E259B017225E7A59003AE2D8 /* ComicData.xcdatamodeld */,
+				E259B01C225E7F4C003AE2D8 /* ComiscCollectionViewCell.swift */,
 			);
 			path = iComicsReader;
 			sourceTree = "<group>";
@@ -291,6 +303,10 @@
 				E204BB4C219A1D65005A5652 /* LockOrientationBarButton.swift in Sources */,
 				E299225C217FBE3200EE2C44 /* ShowPageViewController.swift in Sources */,
 				E29AB734218643C40080D6F5 /* ComicsGetter.swift in Sources */,
+				E259B019225E7A59003AE2D8 /* ComicData.xcdatamodeld in Sources */,
+				E259B01B225E7D1F003AE2D8 /* MainCollectionViewController.swift in Sources */,
+				E259B014225D33DC003AE2D8 /* MangaWesternClassifier.mlmodel in Sources */,
+				E259B01D225E7F4C003AE2D8 /* ComiscCollectionViewCell.swift in Sources */,
 				E245FECE21908B02000D7F04 /* Unarchiver.mm in Sources */,
 				E299225A217FBE3200EE2C44 /* AppDelegate.swift in Sources */,
 				E204BB54219B3222005A5652 /* PopoverMenuViewController.swift in Sources */,
@@ -541,6 +557,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		E259B017225E7A59003AE2D8 /* ComicData.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				E259B018225E7A59003AE2D8 /* ComicData.xcdatamodel */,
+			);
+			currentVersion = E259B018225E7A59003AE2D8 /* ComicData.xcdatamodel */;
+			path = ComicData.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = E299224E217FBE3200EE2C44 /* Project object */;
 }

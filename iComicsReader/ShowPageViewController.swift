@@ -6,6 +6,9 @@
 //  Copyright © 2018 MIEM. All rights reserved.
 //
 import UIKit
+import CoreML
+import Vision
+import CoreData
 
 let kNotificationNameBackGroundColorChanged: NSNotification.Name = NSNotification.Name(rawValue: "BGColorChanged")
 
@@ -66,6 +69,7 @@ class ShowPageViewController: UIViewController, UIScrollViewDelegate, UIGestureR
     @IBOutlet weak var viewWithSlider: UIView!
     
     // MARK: Variables
+    var fileName = "SecretWars00"
     var page = 0
     var isAutorotationUnlocked = true
     var comicsArray = [[String : Any]]() {
@@ -97,7 +101,7 @@ class ShowPageViewController: UIViewController, UIScrollViewDelegate, UIGestureR
         self.changeTitle()
         self.setupCustomBarItem()
         
-        if let filePath = Bundle.main.path(forResource: "SecretWars00", ofType: "cbr") {
+        if let filePath = Bundle.main.path(forResource: fileName, ofType: "cbr") {
             unarchiver.addObserver(self, forKeyPath: "arrayOfComics", options: [], context: nil)
             unarchiver.readArchive(forPath: filePath)
         }
@@ -147,6 +151,7 @@ class ShowPageViewController: UIViewController, UIScrollViewDelegate, UIGestureR
         {
             guard let archive = Unarchiver.sharedInstance().arrayOfComics as? [[String : Any]] else { return }
             comicsArray = archive
+            getTypeOfComics()
         } else if keyPath == "isToolbarHidden" {
             print("YE")
         } else {
@@ -154,7 +159,10 @@ class ShowPageViewController: UIViewController, UIScrollViewDelegate, UIGestureR
         }
     }
     
-    // MARK: Usefull functions
+    // MARK: Useful functions
+    func setComicsType(_ type: String) {
+        
+    }
     
     func changeTitle() {
         var viewTitle = ""
@@ -234,6 +242,44 @@ class ShowPageViewController: UIViewController, UIScrollViewDelegate, UIGestureR
         buttonShowMenuPopover.customView = moreInfoButton
     }
     
+    func getTypeOfComics() {
+        guard let model = try? VNCoreMLModel(for: MangaWesternClassifier().model) else {
+            return
+        }
+        var arrayOfTypes = [String]()
+        // Create request for Vision Core ML model loaded
+        let request = VNCoreMLRequest(model: model) { [weak self] request, error in
+            guard let results = request.results as? [VNClassificationObservation],
+                let topResult = results.first else {
+                    fatalError("unexpected result type from VNCoreMLRequest")
+            }
+            arrayOfTypes.append(topResult.identifier)
+            if arrayOfTypes.count == 5 {
+                let counts = arrayOfTypes.reduce(into: [:]) { $0[$1, default: 0] += 1 }
+                
+                if let (value, _) = counts.max(by: { $0.1 < $1.1 }) {
+                    self?.setComicsType(value)
+                }
+            }
+        }
+
+        for _ in 0...5 {
+            let page = Int.random(in: 0..<comicsArray.count)
+            guard let data = comicsArray[page]["PageData"] as? Data, let image = CIImage(data: data) else {
+                continue
+            }
+            
+            let handler = VNImageRequestHandler(ciImage: image)
+            DispatchQueue.global(qos: .userInteractive).async {
+                do {
+                    try handler.perform([request])
+                } catch {
+                    print(error)
+                }
+            }
+        }
+    }
+    
     // MARK: IBActions
     
     @IBAction func changePageToNext(_ sender: Any) {
@@ -280,7 +326,7 @@ class ShowPageViewController: UIViewController, UIScrollViewDelegate, UIGestureR
     }
     
     @IBAction func showMenuPopover(_ sender: Any) {
-        guard let popVC = storyboard?.instantiateViewController(withIdentifier: "PopoverComicsSettings") else { return }
+        guard let popVC = storyboard?.instantiateViewController(withIdentifier: "PopoverComicsSettings") as? PopoverMenuViewController else { return }
         popVC.modalPresentationStyle = .popover
 
         let popOverVC = popVC.popoverPresentationController
@@ -289,6 +335,7 @@ class ShowPageViewController: UIViewController, UIScrollViewDelegate, UIGestureR
         popOverVC?.sourceRect = CGRect(x: (buttonShowMenuPopover.customView?.bounds.midX)!, y: (buttonShowMenuPopover.customView?.bounds.minY)!, width: 0, height: 0)
         popOverVC?.barButtonItem = buttonShowMenuPopover
         popOverVC?.permittedArrowDirections = .up
+        popVC.comicsName = fileName
         popVC.preferredContentSize = CGSize(width: 350, height: 300)
         
         UIView.animate(withDuration: 0.15, delay: 0.0, options: .curveEaseInOut, animations: {
