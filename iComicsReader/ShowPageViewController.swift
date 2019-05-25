@@ -101,10 +101,10 @@ class ShowPageViewController: UIViewController, UIScrollViewDelegate, UIGestureR
         self.changeTitle()
         self.setupCustomBarItem()
         
-        if let filePath = Bundle.main.path(forResource: fileName, ofType: "cbr") {
-            unarchiver.addObserver(self, forKeyPath: "arrayOfComics", options: [], context: nil)
-            unarchiver.readArchive(forPath: filePath)
-        }
+//        if let filePath = Bundle.main.path(forResource: fileName, ofType: "cbr") {
+//            unarchiver.addObserver(self, forKeyPath: "arrayOfComics", options: [], context: nil)
+//            unarchiver.readArchive(forPath: filePath)
+//        }
         
         sliderViewHeight.constant = 0
         
@@ -149,9 +149,9 @@ class ShowPageViewController: UIViewController, UIScrollViewDelegate, UIGestureR
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         if keyPath! == "arrayOfComics"
         {
-            guard let archive = Unarchiver.sharedInstance().arrayOfComics as? [[String : Any]] else { return }
-            comicsArray = archive
-            getTypeOfComics()
+//            guard let archive = Unarchiver.sharedInstance().arrayOfComics as? [[String : Any]] else { return }
+//            comicsArray = archive
+//            getTypeOfComics()
         } else if keyPath == "isToolbarHidden" {
             print("YE")
         } else {

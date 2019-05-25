@@ -12,16 +12,9 @@
 #include <archive_entry.h>
 #include <archive.h>
 
-@interface Unarchiver()
-
-@property NSMutableArray* arrayOfComics;
-
-@end
-
 @implementation Unarchiver
 {
     BOOL* cancelledPtr;
-    NSString* previousPath;
 }
 
 + (Unarchiver*) sharedInstance
@@ -38,7 +31,6 @@
 {
     self = [super init];
     if (self) {
-        self.arrayOfComics = [NSMutableArray new];
     }
     return self;
 }
@@ -48,18 +40,13 @@
     *cancelledPtr = YES;
 }
 
-- (void) readArchiveForPath:(NSString*)path
+- (void) readArchiveForPath:(NSURL*)url withComplitionBlock:(void (NSDictionary<NSString*, id>*))complitionBlock;
 {
-    if ([previousPath isEqualToString: path])
-    {
-        [self willChangeValueForKey:@"arrayOfComics"];
-        [self didChangeValueForKey:@"arrayOfComics"];
-        return;
-    }
-    _arrayOfComics = [NSMutableArray new];
     __block BOOL cancelled = NO;
     dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-        const char *pathString = [path cStringUsingEncoding:NSASCIIStringEncoding];
+        
+        NSMutableArray* arrayOfComics = [NSMutableArray new];
+        const char *pathString = [url.path cStringUsingEncoding:NSASCIIStringEncoding];
         struct archive* archive;
         struct archive_entry *entry;
         int readData;
@@ -82,16 +69,9 @@
             if (readEntryData> 0) {
                 NSLog(@"Read %d out of %zu", readEntryData, entry_size);
                 NSData* pageData = [[NSData alloc] initWithBytes:content length: entry_size];
-                NSString* pageName = [[NSString alloc] initWithCString: archive_entry_pathname(entry) encoding: NSUTF8StringEncoding];
                 if (pageData)
                 {
-                    NSDictionary* dictionaryOfPage = @{
-                                                       @"PageNumber" : [NSNumber numberWithInt:page_number],
-                                                       @"PageTitle" : pageName,
-                                                       @"PageData" : pageData
-                                                       };
-                    [self.arrayOfComics addObject:dictionaryOfPage];
-                    
+                    [arrayOfComics addObject: pageData];
                 }
             }
             else if (archive_errno(archive) != ARCHIVE_OK)
@@ -108,9 +88,13 @@
             NSLog(@"Archive Is Not OK");
             return;
         }
-        self->previousPath = path;
-        [self willChangeValueForKey:@"arrayOfComics"];
-        [self didChangeValueForKey:@"arrayOfComics"];
+        
+        NSDictionary* dictionaryOfPage = @{
+                                           @"Data": arrayOfComics,
+                                           @"Name": [[url lastPathComponent] stringByDeletingPathExtension],
+                                            };
+        complitionBlock(dictionaryOfPage);
+        
     });
     cancelledPtr = &cancelled;
 }

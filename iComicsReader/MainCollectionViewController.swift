@@ -15,6 +15,7 @@ class MainCollectionViewController: UIViewController, UICollectionViewDelegate, 
     let comiscArray = [NSManagedObject]()
 
     @IBOutlet weak var collectionView: UICollectionView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -23,7 +24,7 @@ class MainCollectionViewController: UIViewController, UICollectionViewDelegate, 
     
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 20
+        return ComicsGetter.shared.arrayOfComics.count
         
     }
     
@@ -31,8 +32,17 @@ class MainCollectionViewController: UIViewController, UICollectionViewDelegate, 
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: comiscCellId, for: indexPath) as? ComiscCollectionViewCell else {
             fatalError("Cell Not Created")
         }
-        cell.frame.size = CGSize(width: collectionView.frame.width / 2 - 20, height: collectionView.frame.width / 2 - 20) 
         return cell
     }
 
 }
+
+extension MainCollectionViewController: UICollectionViewDelegateFlowLayout {
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let padding: CGFloat =  19
+        let cellWidth = (UIApplication.shared.delegate as! AppDelegate).screenWidth / 2 - padding
+        return CGSize(width: cellWidth, height: cellWidth * sqrt(2))
+    }
+}
+
