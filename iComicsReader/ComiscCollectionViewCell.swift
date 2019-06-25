@@ -9,5 +9,7 @@
 import UIKit
 
 class ComiscCollectionViewCell: UICollectionViewCell {
+    @IBOutlet weak var previewImage: UIImageView!
+    @IBOutlet weak var blurImage: UIImageView!
     
 }

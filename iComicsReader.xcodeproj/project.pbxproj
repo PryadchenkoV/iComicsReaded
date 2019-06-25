@@ -12,7 +12,16 @@
 		E204BB54219B3222005A5652 /* PopoverMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E204BB53219B3222005A5652 /* PopoverMenuViewController.swift */; };
 		E225F9EE219B378400C1BAD5 /* Preferences.plist in Resources */ = {isa = PBXBuildFile; fileRef = E225F9ED219B378400C1BAD5 /* Preferences.plist */; };
 		E22EE607219390420043C148 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = E22EE605219390420043C148 /* Localizable.strings */; };
-		E245FEC121908A8F000D7F04 /* libarchive.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E245FEC021908A8F000D7F04 /* libarchive.a */; };
+		E239C395229AA3B800629383 /* Astonishing X-Men #006.cbr in Resources */ = {isa = PBXBuildFile; fileRef = E239C391229AA2BC00629383 /* Astonishing X-Men #006.cbr */; };
+		E239C396229AA3B800629383 /* Darth Vader 05.cbr in Resources */ = {isa = PBXBuildFile; fileRef = E239C38E229AA2BB00629383 /* Darth Vader 05.cbr */; };
+		E239C397229AA3B800629383 /* New Excalibur 007.cbr in Resources */ = {isa = PBXBuildFile; fileRef = E239C38D229AA2BB00629383 /* New Excalibur 007.cbr */; };
+		E239C398229AA3B800629383 /* Nightmask #03.cbr in Resources */ = {isa = PBXBuildFile; fileRef = E239C38F229AA2BB00629383 /* Nightmask #03.cbr */; };
+		E239C39A229AA3B800629383 /* Vimanarama 03.cbr in Resources */ = {isa = PBXBuildFile; fileRef = E239C393229AA2BC00629383 /* Vimanarama 03.cbr */; };
+		E239C39B229AA3B800629383 /* Year 100 001.cbr in Resources */ = {isa = PBXBuildFile; fileRef = E239C390229AA2BB00629383 /* Year 100 001.cbr */; };
+		E239C39D229AB08C00629383 /* Blade v3 07.cbr in Resources */ = {isa = PBXBuildFile; fileRef = E239C39C229AB03500629383 /* Blade v3 07.cbr */; };
+		E239C3A1229ABA0800629383 /* libarchive.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = E239C3A0229ABA0800629383 /* libarchive.tbd */; };
+		E239C3A3229B104E00629383 /* ComicsPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E239C3A2229B104E00629383 /* ComicsPageViewController.swift */; };
+		E239C3A5229B13C900629383 /* ImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E239C3A4229B13C900629383 /* ImageViewController.swift */; };
 		E245FEC421908AB3000D7F04 /* libbz2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = E245FEC321908AB3000D7F04 /* libbz2.tbd */; };
 		E245FEC621908AB9000D7F04 /* libxml2.2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = E245FEC521908AB9000D7F04 /* libxml2.2.tbd */; };
 		E245FEC821908AC1000D7F04 /* libz.1.1.3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = E245FEC721908AC1000D7F04 /* libz.1.1.3.tbd */; };
@@ -23,7 +32,6 @@
 		E259B01B225E7D1F003AE2D8 /* MainCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E259B01A225E7D1F003AE2D8 /* MainCollectionViewController.swift */; };
 		E259B01D225E7F4C003AE2D8 /* ComiscCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E259B01C225E7F4C003AE2D8 /* ComiscCollectionViewCell.swift */; };
 		E299225A217FBE3200EE2C44 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2992259217FBE3200EE2C44 /* AppDelegate.swift */; };
-		E299225C217FBE3200EE2C44 /* ShowPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E299225B217FBE3200EE2C44 /* ShowPageViewController.swift */; };
 		E299225F217FBE3200EE2C44 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E299225D217FBE3200EE2C44 /* Main.storyboard */; };
 		E2992261217FBE3400EE2C44 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E2992260217FBE3400EE2C44 /* Assets.xcassets */; };
 		E2992264217FBE3400EE2C44 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E2992262217FBE3400EE2C44 /* LaunchScreen.storyboard */; };
@@ -58,6 +66,17 @@
 		E22EE608219390460043C148 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		E22EE60A219392AF0043C148 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		E22EE60B219392AF0043C148 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
+		E239C38D229AA2BB00629383 /* New Excalibur 007.cbr */ = {isa = PBXFileReference; lastKnownFileType = file; path = "New Excalibur 007.cbr"; sourceTree = "<group>"; };
+		E239C38E229AA2BB00629383 /* Darth Vader 05.cbr */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Darth Vader 05.cbr"; sourceTree = "<group>"; };
+		E239C38F229AA2BB00629383 /* Nightmask #03.cbr */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Nightmask #03.cbr"; sourceTree = "<group>"; };
+		E239C390229AA2BB00629383 /* Year 100 001.cbr */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Year 100 001.cbr"; sourceTree = "<group>"; };
+		E239C391229AA2BC00629383 /* Astonishing X-Men #006.cbr */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Astonishing X-Men #006.cbr"; sourceTree = "<group>"; };
+		E239C393229AA2BC00629383 /* Vimanarama 03.cbr */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Vimanarama 03.cbr"; sourceTree = "<group>"; };
+		E239C39C229AB03500629383 /* Blade v3 07.cbr */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Blade v3 07.cbr"; path = "../../../../Downloads/ForModel/Blade/Blade vol.3 (2006-2007)/Blade v3 07.cbr"; sourceTree = "<group>"; };
+		E239C39E229AB9C700629383 /* libarchive.2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libarchive.2.tbd; path = usr/lib/libarchive.2.tbd; sourceTree = SDKROOT; };
+		E239C3A0229ABA0800629383 /* libarchive.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libarchive.tbd; path = usr/lib/libarchive.tbd; sourceTree = SDKROOT; };
+		E239C3A2229B104E00629383 /* ComicsPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComicsPageViewController.swift; sourceTree = "<group>"; };
+		E239C3A4229B13C900629383 /* ImageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageViewController.swift; sourceTree = "<group>"; };
 		E245FEC021908A8F000D7F04 /* libarchive.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libarchive.a; sourceTree = "<group>"; };
 		E245FEC321908AB3000D7F04 /* libbz2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libbz2.tbd; path = usr/lib/libbz2.tbd; sourceTree = SDKROOT; };
 		E245FEC521908AB9000D7F04 /* libxml2.2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libxml2.2.tbd; path = usr/lib/libxml2.2.tbd; sourceTree = SDKROOT; };
@@ -74,7 +93,6 @@
 		E259B01C225E7F4C003AE2D8 /* ComiscCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComiscCollectionViewCell.swift; sourceTree = "<group>"; };
 		E2992256217FBE3200EE2C44 /* iComicsReader.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iComicsReader.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E2992259217FBE3200EE2C44 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		E299225B217FBE3200EE2C44 /* ShowPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowPageViewController.swift; sourceTree = "<group>"; };
 		E299225E217FBE3200EE2C44 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		E2992260217FBE3400EE2C44 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E2992263217FBE3400EE2C44 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -90,11 +108,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E239C3A1229ABA0800629383 /* libarchive.tbd in Frameworks */,
 				E245FECA21908AC9000D7F04 /* libiconv.2.4.0.tbd in Frameworks */,
 				E245FEC821908AC1000D7F04 /* libz.1.1.3.tbd in Frameworks */,
 				E245FEC621908AB9000D7F04 /* libxml2.2.tbd in Frameworks */,
 				E245FEC421908AB3000D7F04 /* libbz2.tbd in Frameworks */,
-				E245FEC121908A8F000D7F04 /* libarchive.a in Frameworks */,
 				42AC4DD9CB9F85B1EE60650C /* Pods_iComicsReader.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -114,6 +132,8 @@
 		247979A778BA7096B81F75E4 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				E239C3A0229ABA0800629383 /* libarchive.tbd */,
+				E239C39E229AB9C700629383 /* libarchive.2.tbd */,
 				E245FEC921908AC8000D7F04 /* libiconv.2.4.0.tbd */,
 				E245FEC721908AC1000D7F04 /* libz.1.1.3.tbd */,
 				E245FEC521908AB9000D7F04 /* libxml2.2.tbd */,
@@ -134,6 +154,22 @@
 				E2992262217FBE3400EE2C44 /* LaunchScreen.storyboard */,
 			);
 			path = Resources;
+			sourceTree = "<group>";
+		};
+		E239C394229AA2CB00629383 /* TestComics */ = {
+			isa = PBXGroup;
+			children = (
+				E239C39C229AB03500629383 /* Blade v3 07.cbr */,
+				E299226B217FC0A700EE2C44 /* SecretWars00.cbr */,
+				E239C391229AA2BC00629383 /* Astonishing X-Men #006.cbr */,
+				E239C38E229AA2BB00629383 /* Darth Vader 05.cbr */,
+				E239C38D229AA2BB00629383 /* New Excalibur 007.cbr */,
+				E239C38F229AA2BB00629383 /* Nightmask #03.cbr */,
+				E239C393229AA2BC00629383 /* Vimanarama 03.cbr */,
+				E239C390229AA2BB00629383 /* Year 100 001.cbr */,
+				E29AB73121825DAE0080D6F5 /* Scott_Pilgrim_Vol_6.cbz */,
+			);
+			path = TestComics;
 			sourceTree = "<group>";
 		};
 		E245FED021908B5E000D7F04 /* ObjC */ = {
@@ -178,11 +214,11 @@
 			children = (
 				E2992259217FBE3200EE2C44 /* AppDelegate.swift */,
 				E259B01A225E7D1F003AE2D8 /* MainCollectionViewController.swift */,
-				E299225B217FBE3200EE2C44 /* ShowPageViewController.swift */,
+				E239C3A4229B13C900629383 /* ImageViewController.swift */,
+				E239C3A2229B104E00629383 /* ComicsPageViewController.swift */,
 				E204BB48219A1914005A5652 /* Resources */,
 				E2992265217FBE3400EE2C44 /* Info.plist */,
-				E299226B217FC0A700EE2C44 /* SecretWars00.cbr */,
-				E29AB73121825DAE0080D6F5 /* Scott_Pilgrim_Vol_6.cbz */,
+				E239C394229AA2CB00629383 /* TestComics */,
 				E29AB733218643C40080D6F5 /* ComicsGetter.swift */,
 				E245FED021908B5E000D7F04 /* ObjC */,
 				E245FED121908B6B000D7F04 /* include */,
@@ -230,7 +266,7 @@
 				TargetAttributes = {
 					E2992255217FBE3200EE2C44 = {
 						CreatedOnToolsVersion = 10.0;
-						LastSwiftMigration = 1010;
+						LastSwiftMigration = 1020;
 					};
 				};
 			};
@@ -258,6 +294,13 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E239C39D229AB08C00629383 /* Blade v3 07.cbr in Resources */,
+				E239C395229AA3B800629383 /* Astonishing X-Men #006.cbr in Resources */,
+				E239C396229AA3B800629383 /* Darth Vader 05.cbr in Resources */,
+				E239C397229AA3B800629383 /* New Excalibur 007.cbr in Resources */,
+				E239C398229AA3B800629383 /* Nightmask #03.cbr in Resources */,
+				E239C39A229AA3B800629383 /* Vimanarama 03.cbr in Resources */,
+				E239C39B229AA3B800629383 /* Year 100 001.cbr in Resources */,
 				E29AB73221825DFE0080D6F5 /* Scott_Pilgrim_Vol_6.cbz in Resources */,
 				E225F9EE219B378400C1BAD5 /* Preferences.plist in Resources */,
 				E22EE607219390420043C148 /* Localizable.strings in Resources */,
@@ -300,8 +343,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E239C3A3229B104E00629383 /* ComicsPageViewController.swift in Sources */,
 				E204BB4C219A1D65005A5652 /* LockOrientationBarButton.swift in Sources */,
-				E299225C217FBE3200EE2C44 /* ShowPageViewController.swift in Sources */,
 				E29AB734218643C40080D6F5 /* ComicsGetter.swift in Sources */,
 				E259B019225E7A59003AE2D8 /* ComicData.xcdatamodeld in Sources */,
 				E259B01B225E7D1F003AE2D8 /* MainCollectionViewController.swift in Sources */,
@@ -309,6 +352,7 @@
 				E259B01D225E7F4C003AE2D8 /* ComiscCollectionViewCell.swift in Sources */,
 				E245FECE21908B02000D7F04 /* Unarchiver.mm in Sources */,
 				E299225A217FBE3200EE2C44 /* AppDelegate.swift in Sources */,
+				E239C3A5229B13C900629383 /* ImageViewController.swift in Sources */,
 				E204BB54219B3222005A5652 /* PopoverMenuViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -496,7 +540,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "iComicsReader/include/iComicsReader-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -530,7 +574,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "MIEM-HSE.iComicsReader";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "iComicsReader/include/iComicsReader-Bridging-Header.h";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;

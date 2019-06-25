@@ -27,6 +27,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let comicsGetter = ComicsGetter.shared
         if comicsGetter.arrayOfComics.count == 0 {
             comicsGetter.addComics(withPath: Bundle.main.url(forResource: "SecretWars00", withExtension: "cbr")!)
+            comicsGetter.addComics(withPath: Bundle.main.url(forResource: "Scott_Pilgrim_Vol_6", withExtension: "cbz")!)
+            comicsGetter.addComics(withPath: Bundle.main.url(forResource: "Astonishing X-Men #006", withExtension: "cbr")!)
+
+            comicsGetter.addComics(withPath: Bundle.main.url(forResource: "Darth Vader 05", withExtension: "cbr")!)
+
+//            comicsGetter.addComics(withPath: Bundle.main.url(forResource: "New Excalibur 007", withExtension: "cbr")!)
+
+            comicsGetter.addComics(withPath: Bundle.main.url(forResource: "Nightmask #03", withExtension: "cbr")!)
+
+//            comicsGetter.addComics(withPath: Bundle.main.url(forResource: "Blade v3 07", withExtension: "cbr")!)
+
+            comicsGetter.addComics(withPath: Bundle.main.url(forResource: "Vimanarama 03", withExtension: "cbr")!)
+
+            comicsGetter.addComics(withPath: Bundle.main.url(forResource: "Year 100 001", withExtension: "cbr")!)
+
+            
         }
         #endif
         
