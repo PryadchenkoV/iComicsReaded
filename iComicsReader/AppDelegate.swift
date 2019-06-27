@@ -26,21 +26,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         #if DEBUG
         let comicsGetter = ComicsGetter.shared
         if comicsGetter.arrayOfComics.count == 0 {
-            comicsGetter.addComics(withPath: Bundle.main.url(forResource: "SecretWars00", withExtension: "cbr")!)
-            comicsGetter.addComics(withPath: Bundle.main.url(forResource: "Scott_Pilgrim_Vol_6", withExtension: "cbz")!)
-            comicsGetter.addComics(withPath: Bundle.main.url(forResource: "Astonishing X-Men #006", withExtension: "cbr")!)
+            comicsGetter.addComics(withPath: Bundle.main.path(forResource: "SecretWars00", ofType: "cbr")!)
+            comicsGetter.addComics(withPath: Bundle.main.path(forResource: "Scott_Pilgrim_Vol_6", ofType: "cbz")!)
+            comicsGetter.addComics(withPath: Bundle.main.path(forResource: "Astonishing X-Men #006", ofType: "cbr")!)
 
-            comicsGetter.addComics(withPath: Bundle.main.url(forResource: "Darth Vader 05", withExtension: "cbr")!)
+            comicsGetter.addComics(withPath: Bundle.main.path(forResource: "Darth Vader 05", ofType: "cbr")!)
 
-//            comicsGetter.addComics(withPath: Bundle.main.url(forResource: "New Excalibur 007", withExtension: "cbr")!)
+//            comicsGetter.addComics(withPath: Bundle.main.url(forResource: "New Excalibur 007", ofType: "cbr")!)
 
-            comicsGetter.addComics(withPath: Bundle.main.url(forResource: "Nightmask #03", withExtension: "cbr")!)
+            comicsGetter.addComics(withPath: Bundle.main.path(forResource: "Nightmask #03", ofType: "cbr")!)
 
-//            comicsGetter.addComics(withPath: Bundle.main.url(forResource: "Blade v3 07", withExtension: "cbr")!)
+//            comicsGetter.addComics(withPath: Bundle.main.url(forResource: "Blade v3 07", ofType: "cbr")!)
 
-            comicsGetter.addComics(withPath: Bundle.main.url(forResource: "Vimanarama 03", withExtension: "cbr")!)
+            comicsGetter.addComics(withPath: Bundle.main.path(forResource: "Vimanarama 03", ofType: "cbr")!)
 
-            comicsGetter.addComics(withPath: Bundle.main.url(forResource: "Year 100 001", withExtension: "cbr")!)
+            comicsGetter.addComics(withPath: Bundle.main.path(forResource: "Year 100 001", ofType: "cbr")!)
 
             
         }

@@ -15,7 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (Unarchiver*) sharedInstance;
 
 - (void) cancelTask;
-- (void) readArchiveForPath:(NSURL*)url withComplitionBlock:(void (NSDictionary<NSString*, id>*))complitionBlock;
+- (void) readArchiveForPath:(NSURL*)url withUUID:(NSUUID*)uuid withComplitionBlock:(void (NSArray*, NSUUID*))complitionBlock;
 
 
 @end

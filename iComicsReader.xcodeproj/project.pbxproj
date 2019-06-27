@@ -18,7 +18,6 @@
 		E239C398229AA3B800629383 /* Nightmask #03.cbr in Resources */ = {isa = PBXBuildFile; fileRef = E239C38F229AA2BB00629383 /* Nightmask #03.cbr */; };
 		E239C39A229AA3B800629383 /* Vimanarama 03.cbr in Resources */ = {isa = PBXBuildFile; fileRef = E239C393229AA2BC00629383 /* Vimanarama 03.cbr */; };
 		E239C39B229AA3B800629383 /* Year 100 001.cbr in Resources */ = {isa = PBXBuildFile; fileRef = E239C390229AA2BB00629383 /* Year 100 001.cbr */; };
-		E239C39D229AB08C00629383 /* Blade v3 07.cbr in Resources */ = {isa = PBXBuildFile; fileRef = E239C39C229AB03500629383 /* Blade v3 07.cbr */; };
 		E239C3A1229ABA0800629383 /* libarchive.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = E239C3A0229ABA0800629383 /* libarchive.tbd */; };
 		E239C3A3229B104E00629383 /* ComicsPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E239C3A2229B104E00629383 /* ComicsPageViewController.swift */; };
 		E239C3A5229B13C900629383 /* ImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E239C3A4229B13C900629383 /* ImageViewController.swift */; };
@@ -72,7 +71,6 @@
 		E239C390229AA2BB00629383 /* Year 100 001.cbr */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Year 100 001.cbr"; sourceTree = "<group>"; };
 		E239C391229AA2BC00629383 /* Astonishing X-Men #006.cbr */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Astonishing X-Men #006.cbr"; sourceTree = "<group>"; };
 		E239C393229AA2BC00629383 /* Vimanarama 03.cbr */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Vimanarama 03.cbr"; sourceTree = "<group>"; };
-		E239C39C229AB03500629383 /* Blade v3 07.cbr */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Blade v3 07.cbr"; path = "../../../../Downloads/ForModel/Blade/Blade vol.3 (2006-2007)/Blade v3 07.cbr"; sourceTree = "<group>"; };
 		E239C39E229AB9C700629383 /* libarchive.2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libarchive.2.tbd; path = usr/lib/libarchive.2.tbd; sourceTree = SDKROOT; };
 		E239C3A0229ABA0800629383 /* libarchive.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libarchive.tbd; path = usr/lib/libarchive.tbd; sourceTree = SDKROOT; };
 		E239C3A2229B104E00629383 /* ComicsPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComicsPageViewController.swift; sourceTree = "<group>"; };
@@ -159,7 +157,6 @@
 		E239C394229AA2CB00629383 /* TestComics */ = {
 			isa = PBXGroup;
 			children = (
-				E239C39C229AB03500629383 /* Blade v3 07.cbr */,
 				E299226B217FC0A700EE2C44 /* SecretWars00.cbr */,
 				E239C391229AA2BC00629383 /* Astonishing X-Men #006.cbr */,
 				E239C38E229AA2BB00629383 /* Darth Vader 05.cbr */,
@@ -294,7 +291,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E239C39D229AB08C00629383 /* Blade v3 07.cbr in Resources */,
 				E239C395229AA3B800629383 /* Astonishing X-Men #006.cbr in Resources */,
 				E239C396229AA3B800629383 /* Darth Vader 05.cbr in Resources */,
 				E239C397229AA3B800629383 /* New Excalibur 007.cbr in Resources */,
@@ -524,7 +520,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 				);
-				HEADER_SEARCH_PATHS = /Users/IvanPryadchenko/Develop/iComicsReader/iComicsReader/include/;
+				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/iComicsReader/include/";
 				INFOPLIST_FILE = iComicsReader/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -559,7 +555,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 				);
-				HEADER_SEARCH_PATHS = /Users/IvanPryadchenko/Develop/iComicsReader/iComicsReader/include/;
+				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/iComicsReader/include/";
 				INFOPLIST_FILE = iComicsReader/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (

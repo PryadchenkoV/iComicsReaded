@@ -40,7 +40,7 @@
     *cancelledPtr = YES;
 }
 
-- (void) readArchiveForPath:(NSURL*)url withComplitionBlock:(void (NSDictionary<NSString*, id>*))complitionBlock;
+- (void) readArchiveForPath:(NSURL*)url withUUID:(NSUUID*)uuid withComplitionBlock:(void (NSArray*, NSUUID*))complitionBlock
 {
     __block BOOL cancelled = NO;
     dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
@@ -88,12 +88,7 @@
             NSLog(@"Archive Is Not OK");
             return;
         }
-        
-        NSDictionary* dictionaryOfPage = @{
-                                           @"Data": arrayOfComics,
-                                           @"Name": [[url lastPathComponent] stringByDeletingPathExtension],
-                                            };
-        complitionBlock(dictionaryOfPage);
+        complitionBlock(arrayOfComics, uuid);
         
     });
     cancelledPtr = &cancelled;

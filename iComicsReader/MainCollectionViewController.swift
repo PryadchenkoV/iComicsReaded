@@ -50,7 +50,7 @@ class MainCollectionViewController: UIViewController, UICollectionViewDelegate, 
             fatalError("Cell Not Created")
         }
         
-        if let data = ComicsGetter.shared.arrayOfComics[indexPath.item].value(forKey: "data") as? [Data], let first = data.first, let previewImage = UIImage(data: first) {
+        if let data = ComicsGetter.shared.arrayOfComics[indexPath.item].value(forKey: "firstPage") as? Data, let previewImage = UIImage(data: data) {
             cell.previewImage.image = previewImage
             cell.blurImage.image = previewImage
         } else {
