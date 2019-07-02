@@ -36,33 +36,17 @@ class ComicsPageViewController: UIPageViewController, UIPageViewControllerDelega
     }
     
     func prepareArrayOfViewControllers() {
-        if let comicsInstance = comicsInstance, let uuid = comicsInstance.value(forKey: "uuid") as? UUID {
-            do {
-                guard let destPath = NSSearchPathForDirectoriesInDomains(.documentDirectory,
-                                                                         .userDomainMask,
-                                                                         true).first else
-                {
-                    print("[ComicsPageViewController] DestPath in nil")
-                    return
-                }
-                let dirName = uuid.uuidString
-                let fullDirPath = URL(fileURLWithPath: destPath)
-                    .appendingPathComponent(dirName)
-                let fileURLs = try FileManager.default.contentsOfDirectory(at: fullDirPath, includingPropertiesForKeys: nil)
-                for (index,_) in fileURLs.enumerated() {
+        if let comicsInstance = comicsInstance, let data = comicsInstance.value(forKey: "arrayOfData") as? Data, let arrayOfData = NSKeyedUnarchiver.unarchiveObject(with: data) as? [Data] {
+                for (index,data) in arrayOfData.enumerated() {
                     guard let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ImageView") as? ImageViewController else {
                         print("[MainPageViewController] Can't create ImageViewController")
                         continue
                     }
                     viewController.pageNumber = index
-                    viewController.pageCount = fileURLs.count
-                    let fileName = fullDirPath.appendingPathComponent("\(index).png")
-                    viewController.image = UIImage(contentsOfFile: fileName.path)
+                    viewController.pageCount = arrayOfData.count
+                    viewController.image = UIImage(data: data)
                     arrayOfViewControllers.append(viewController)
                 }
-            } catch {
-                print("[ComicsPageViewController] Error getting dir \(error.localizedDescription)")
-            }
         }
     }
     

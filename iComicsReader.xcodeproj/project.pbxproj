@@ -146,6 +146,7 @@
 		E204BB48219A1914005A5652 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				E259B017225E7A59003AE2D8 /* ComicData.xcdatamodeld */,
 				E259B013225D33DC003AE2D8 /* MangaWesternClassifier.mlmodel */,
 				E299225D217FBE3200EE2C44 /* Main.storyboard */,
 				E2992260217FBE3400EE2C44 /* Assets.xcassets */,
@@ -223,7 +224,6 @@
 				E204BB4B219A1D65005A5652 /* LockOrientationBarButton.swift */,
 				E204BB53219B3222005A5652 /* PopoverMenuViewController.swift */,
 				E225F9ED219B378400C1BAD5 /* Preferences.plist */,
-				E259B017225E7A59003AE2D8 /* ComicData.xcdatamodeld */,
 				E259B01C225E7F4C003AE2D8 /* ComiscCollectionViewCell.swift */,
 			);
 			path = iComicsReader;

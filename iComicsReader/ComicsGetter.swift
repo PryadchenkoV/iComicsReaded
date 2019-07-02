@@ -77,61 +77,39 @@ class ComicsGetter: NSObject {
             }
             
             self.unarchiver.readArchive(forPath: url, with: uuid, withComplitionBlock: { (arrayOfData, uuid) in
-                if let destPath = NSSearchPathForDirectoriesInDomains(.documentDirectory,
-                                                                      .userDomainMask,
-                                                                      true).first {
-                    let dirName = uuid.uuidString
-                    let fullDirPath = URL(fileURLWithPath: destPath)
-                        .appendingPathComponent(dirName)
+                guard let firstPage = arrayOfData[0] as? Data else {
+                    print("[ComicsGetter] First Page is nil")
+                    return
+                }
+                DispatchQueue.main.async {
+                    guard let appDelegate =
+                        UIApplication.shared.delegate as? AppDelegate else {
+                            return
+                    }
+                    let managedContext =
+                        appDelegate.persistentContainer.viewContext
+                    let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Comics")
+                    
+                    fetchRequest.predicate = NSPredicate(format: "uuid = %@",
+                                                         argumentArray: [uuid])
                     
                     do {
-                        try FileManager.default.createDirectory(atPath: fullDirPath.path, withIntermediateDirectories: false, attributes: nil)
-                        for (index, data) in arrayOfData.enumerated() {
-                            guard let data = data as? Data else {
-                                print("[ComicsGetter] Error creating data from array")
-                                continue
-                            }
-                            let image = UIImage(data: data)
-                            if let pngData = image?.pngData() {
-                                try pngData.write(to: fullDirPath.appendingPathComponent("\(index).png"), options: .atomic)
-                            }
+                        let results = try managedContext.fetch(fetchRequest) as? [NSManagedObject]
+                        if let results = results {
+                            ComicsGetter.shared.willChangeValue(forKey: "arrayOfComics")
+                            results.first?.setValue(firstPage, forKey: "firstPage")
+                            results.first?.setValue(NSKeyedArchiver.archivedData(withRootObject: arrayOfData), forKey: "arrayOfData")
+                            ComicsGetter.shared.didChangeValue(forKey: "arrayOfComics")
                         }
+                    } catch {
+                        print("Fetch Failed: \(error)")
+                    }
+                    do {
+                        try managedContext.save()
                     } catch let error as NSError {
-                        fatalError("Cannot create dir or write files")
+                        print("Could not save. \(error), \(error.userInfo)")
                     }
-                    guard let firstPage = arrayOfData[0] as? Data else {
-                        print("[ComicsGetter] First Page is nil")
-                        return
-                    }
-                    DispatchQueue.main.async {
-                        guard let appDelegate =
-                            UIApplication.shared.delegate as? AppDelegate else {
-                                return
-                        }
-                        let managedContext =
-                            appDelegate.persistentContainer.viewContext
-                        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Comics")
-                        
-                        fetchRequest.predicate = NSPredicate(format: "uuid = %@",
-                                                             argumentArray: [uuid])
-                        
-                        do {
-                            let results = try managedContext.fetch(fetchRequest) as? [NSManagedObject]
-                            if let results = results {
-                                ComicsGetter.shared.willChangeValue(forKey: "arrayOfComics")
-                                results[0].setValue(firstPage, forKey: "firstPage")
-                                ComicsGetter.shared.didChangeValue(forKey: "arrayOfComics")
-                            }
-                        } catch {
-                            print("Fetch Failed: \(error)")
-                        }
-                        do {
-                            try managedContext.save()
-                        } catch let error as NSError {
-                            print("Could not save. \(error), \(error.userInfo)")
-                        }
-                        ComicsGetter.shared.defineTypeOfComics(withUrl: fullDirPath)
-                    }
+                    ComicsGetter.shared.defineTypeOfComics(withUUID: uuid)
                 }
             })
         }
@@ -139,7 +117,7 @@ class ComicsGetter: NSObject {
     
     @objc func setComicsType(notification: Notification)
     {
-        if let userInfo = notification.userInfo as? [String: Any], let url = userInfo["url"] as? URL, let type = userInfo["type"] as? String {
+        if let userInfo = notification.userInfo as? [String: Any], let uuid = userInfo["uuid"] as? UUID, let type = userInfo["type"] as? String {
             guard let appDelegate =
                 UIApplication.shared.delegate as? AppDelegate else {
                     return
@@ -148,13 +126,13 @@ class ComicsGetter: NSObject {
                 appDelegate.persistentContainer.viewContext
             let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Comics")
             
-            fetchRequest.predicate = NSPredicate(format: "pathToArchive = %@",
-                                                 argumentArray: [url])
+            fetchRequest.predicate = NSPredicate(format: "uuid = %@",
+                                                 argumentArray: [uuid])
             
             do {
                 let results = try managedContext.fetch(fetchRequest) as? [NSManagedObject]
                 if let results = results {
-                    results[0].setValue(type, forKey: "type")
+                    results.first?.setValue(type, forKey: "type")
                 }
             } catch {
                 print("Fetch Failed: \(error)")
@@ -167,54 +145,71 @@ class ComicsGetter: NSObject {
         }
     }
     
-    func defineTypeOfComics(withUrl url: URL) {
+    func defineTypeOfComics(withUUID uuid: UUID) {
         var resultType = 0
         let numberOfTries = 5
+        guard let appDelegate =
+            UIApplication.shared.delegate as? AppDelegate else {
+                return
+        }
         DispatchQueue.global(qos: .background).async {
             do {
-                let fileURLs = try FileManager.default.contentsOfDirectory(at: url, includingPropertiesForKeys: nil)
-                let group = DispatchGroup()
-                for _ in 0..<numberOfTries {
-                    let pageNumber = Int.random(in: 0..<fileURLs.count)
-                    guard let uiImage = UIImage(contentsOfFile: fileURLs[pageNumber].absoluteString), let ciImage = CIImage(image: uiImage) else {
-                        print("ComiscGetter: can't get Image")
+                let managedContext =
+                    appDelegate.persistentContainer.viewContext
+                let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Comics")
+                
+                fetchRequest.predicate = NSPredicate(format: "uuid = %@",
+                                                     argumentArray: [uuid])
+                
+                do {
+                    let results = try managedContext.fetch(fetchRequest) as? [NSManagedObject]
+                    guard let data = results?.first?.value(forKey: "arrayOfData") as? Data, let arrayOfData = NSKeyedUnarchiver.unarchiveObject(with: data) as? [Data] else {
+                        print("ComicsGetter: can't unarchive objects")
                         return
                     }
-                    guard let model = try? VNCoreMLModel(for: MangaWesternClassifier().model) else {
-                        fatalError("ComiscGetter: Can't get ML Model")
+                    let group = DispatchGroup()
+                    for _ in 0..<numberOfTries {
+                        let pageNumber = Int.random(in: 0..<arrayOfData.count)
+                        guard let uiImage = UIImage(data: arrayOfData[pageNumber]), let ciImage = CIImage(image: uiImage) else {
+                            print("ComiscGetter: can't get Image")
+                            return
+                        }
+                        guard let model = try? VNCoreMLModel(for: MangaWesternClassifier().model) else {
+                            fatalError("ComiscGetter: Can't get ML Model")
+                        }
+                        let request = VNCoreMLRequest(model: model, completionHandler: { (request, error) in
+                            guard let results = request.results as? [VNClassificationObservation],
+                                let topResult = results.first else {
+                                    fatalError("unexpected result type from VNCoreMLRequest")
+                            }
+                            print("TOP RESULT: \(topResult.identifier)")
+                            if topResult.identifier == "Manga" {
+                                resultType += 1
+                            }
+                            group.leave()
+                        })
+                        group.enter()
+                        let handler = VNImageRequestHandler(ciImage: ciImage)
+                        DispatchQueue.global(qos: .userInteractive).async {
+                            do {
+                                try handler.perform([request])
+                            } catch {
+                                print(error)
+                            }
+                        }
                     }
-                    let request = VNCoreMLRequest(model: model, completionHandler: { (request, error) in
-                        guard let results = request.results as? [VNClassificationObservation],
-                            let topResult = results.first else {
-                                fatalError("unexpected result type from VNCoreMLRequest")
+                    group.notify(queue: DispatchQueue.main, execute: {
+                        if Double(resultType) > (Double(numberOfTries)/2.0) {
+                            NotificationCenter.default.post(name: kTypeOfComicsDefinedNotificationName, object: nil, userInfo: ["uuid": uuid, "type": "Manga"])
+                            print("This is Mange")
+                        } else {
+                            NotificationCenter.default.post(name: kTypeOfComicsDefinedNotificationName, object: nil, userInfo: ["uuid": uuid, "type": "Western"])
+                            print("This is Western")
                         }
-                        print("TOP RESULT: \(topResult.identifier)")
-                        if topResult.identifier == "Manga" {
-                            resultType += 1
-                        }
-                        group.leave()
                     })
-                    group.enter()
-                    let handler = VNImageRequestHandler(ciImage: ciImage)
-                    DispatchQueue.global(qos: .userInteractive).async {
-                        do {
-                            try handler.perform([request])
-                        } catch {
-                            print(error)
-                        }
-                    }
+                } catch {
+                    print("Error while setting type: \(error.localizedDescription)")
                 }
-                group.notify(queue: DispatchQueue.main, execute: {
-                    if Double(resultType) > (Double(numberOfTries)/2.0) {
-                        NotificationCenter.default.post(name: kTypeOfComicsDefinedNotificationName, object: nil, userInfo: ["url": url, "type": "Manga"])
-                        print("This is Mange")
-                    } else {
-                        NotificationCenter.default.post(name: kTypeOfComicsDefinedNotificationName, object: nil, userInfo: ["url": url, "type": "Western"])
-                        print("This is Western")
-                    }
-                })
-            } catch {
-                print("Error while enumerating files \(url.path): \(error.localizedDescription)")
             }
         }
     }
