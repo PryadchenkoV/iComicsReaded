@@ -24,6 +24,12 @@ class ComicsPageViewController: UIPageViewController, UIPageViewControllerDelega
             return
         }
         changeTitle(pageNumber: 0)
+        navigationItem.largeTitleDisplayMode = .never
+//        navigationController?.isToolbarHidden = true
+//        navigationController?.setToolbarHidden(true, animated: false)
+//        var barButtonSliderShow = UIBarButtonItem(image: #imageLiteral(resourceName: "SliderShow"), style: .plain, target: self, action: #selector(showSliderButtonPushed(_:)))
+//        self.navigationController?.toolbar.setItems([barButtonSliderShow], animated: true)
+        
         let firstViewController = arrayOfViewControllers[lastReadedPage]
         setViewControllers([firstViewController], direction: .forward, animated: true, completion: nil)
         // Do any additional setup after loading the view.
@@ -59,6 +65,10 @@ class ComicsPageViewController: UIPageViewController, UIPageViewControllerDelega
             }
         }
     }
+    
+    @IBAction func showSliderButtonPushed(_ sender: Any) {
+    }
+    
 }
 
 extension ComicsPageViewController: UIPageViewControllerDataSource {

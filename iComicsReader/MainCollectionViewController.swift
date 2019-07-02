@@ -28,6 +28,9 @@ class MainCollectionViewController: UIViewController, UICollectionViewDelegate, 
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        self.navigationController?.navigationBar.prefersLargeTitles = true
+        self.navigationController?.toolbar.isHidden = true
+        self.navigationController?.setToolbarHidden(true, animated: false)
         ComicsGetter.shared.addObserver(self, forKeyPath: "arrayOfComics", options: [], context: nil)
     }
     
@@ -53,9 +56,11 @@ class MainCollectionViewController: UIViewController, UICollectionViewDelegate, 
         if let data = ComicsGetter.shared.arrayOfComics[indexPath.item].value(forKey: "firstPage") as? Data, let previewImage = UIImage(data: data) {
             cell.previewImage.image = previewImage
             cell.blurImage.image = previewImage
+            cell.progressIndicator.stopAnimating()
         } else {
             cell.previewImage.image = nil
             cell.blurImage.image = nil
+            cell.progressIndicator.startAnimating()
         }
         
         return cell
@@ -72,7 +77,7 @@ extension MainCollectionViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let padding: CGFloat =  19
         let cellWidth = (UIApplication.shared.delegate as! AppDelegate).screenWidth / 2 - padding
-        return CGSize(width: cellWidth, height: cellWidth * sqrt(2))
+        return CGSize(width: cellWidth - 10, height: cellWidth * sqrt(2))
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {

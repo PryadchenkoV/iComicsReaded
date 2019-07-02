@@ -64,7 +64,7 @@ class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestureReco
     @IBOutlet weak var lockOrientationToolBarItem: UIBarButtonItem!
     @IBOutlet weak var sliderChangePage: UISlider!
     @IBOutlet weak var buttonShowMenuPopover: UIBarButtonItem!
-    @IBOutlet weak var barButtonSliderShow: UIBarButtonItem!
+    var barButtonSliderShow: UIBarButtonItem?
     @IBOutlet weak var sliderViewHeight: NSLayoutConstraint!
     @IBOutlet weak var viewWithSlider: UIView!
     
@@ -80,6 +80,10 @@ class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestureReco
         scrollView.delegate = self
         
         navigationItem.largeTitleDisplayMode = .never
+//        navigationController?.toolbar.isHidden = false
+//        navigationController?.setToolbarHidden(false, animated: false)
+//        barButtonSliderShow = UIBarButtonItem(image: #imageLiteral(resourceName: "SliderShow"), style: .plain, target: self, action: #selector(showSliderButtonPushed(_:)))
+//        self.navigationController?.toolbar.setItems([self.barButtonSliderShow!], animated: true)
         
         let doubleTapGuest = UITapGestureRecognizer(target: self, action: #selector(handleDoubleTapScrollView(recognizer:)))
         doubleTapGuest.numberOfTapsRequired = 2
@@ -90,8 +94,8 @@ class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestureReco
     
         sliderViewHeight.constant = 0
         
-        navigationController?.setToolbarHidden(true, animated: true)
-        navigationController?.setNavigationBarHidden(true, animated: true)
+//        navigationController?.setToolbarHidden(true, animated: true)
+//        navigationController?.setNavigationBarHidden(true, animated: true)
         
         NotificationCenter.default.addObserver(self, selector: #selector(setBGColor), name: kNotificationNameBackGroundColorChanged, object: nil)
         
@@ -211,14 +215,14 @@ class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestureReco
         UIView.animate(withDuration: 0.2, delay: 0.0, options: .curveEaseInOut, animations: {
             self.view.layoutIfNeeded()
         }, completion: nil)
-        guard let barButtonView = self.barButtonSliderShow.value(forKey: "view") as? UIView else {
+        guard let barButtonView = self.barButtonSliderShow?.value(forKey: "view") as? UIView else {
             return
         }
         UIView.transition(with: barButtonView, duration: 0.2, options: .transitionCrossDissolve, animations: {
             if self.sliderViewHeight.constant == 0 {
-                self.barButtonSliderShow.image = #imageLiteral(resourceName: "SliderShow")
+                self.barButtonSliderShow?.image = #imageLiteral(resourceName: "SliderShow")
             } else {
-                self.barButtonSliderShow.image = #imageLiteral(resourceName: "Hide")
+                self.barButtonSliderShow?.image = #imageLiteral(resourceName: "Hide")
             }
         }, completion: nil)
     }
