@@ -19,12 +19,13 @@ class ComicsGetter: NSObject {
     
     static let shared = ComicsGetter()
     
-    var arrayOfComics = [NSManagedObject]()
+    var arrayOfComics = [UUID]()
     
     let unarchiver = Unarchiver.sharedInstance()
     
     override init() {
         super.init()
+        NotificationCenter.default.addObserver(self, selector: #selector(setComicsType(notification:)), name: kTypeOfComicsDefinedNotificationName, object: nil)
         guard let appDelegate =
             UIApplication.shared.delegate as? AppDelegate else {
                 return
@@ -32,13 +33,19 @@ class ComicsGetter: NSObject {
         let managedContext =
             appDelegate.persistentContainer.viewContext
         let fetchRequest =
-            NSFetchRequest<NSManagedObject>(entityName: "Comics")
+            NSFetchRequest<NSDictionary>(entityName: "Comics")
+        fetchRequest.propertiesToFetch = ["uuid"]
+        fetchRequest.resultType = .dictionaryResultType
         do {
-            arrayOfComics = try managedContext.fetch(fetchRequest)
+            let arrayOfDictionary = try managedContext.fetch(fetchRequest)
+            var uuids = [UUID]()
+            for dictionary in arrayOfDictionary {
+                uuids.append(dictionary.value(forKey: "uuid") as! UUID)
+            }
+            arrayOfComics = uuids
         } catch let error as NSError {
             print("Could not fetch. \(error), \(error.userInfo)")
         }
-        NotificationCenter.default.addObserver(self, selector: #selector(setComicsType(notification:)), name: kTypeOfComicsDefinedNotificationName, object: nil)
     }
     
     deinit {
@@ -48,71 +55,67 @@ class ComicsGetter: NSObject {
     func addComics(withPath path: String) {
         let url = URL(fileURLWithPath: path)
         
-        DispatchQueue.main.async {
-            guard let appDelegate =
-                UIApplication.shared.delegate as? AppDelegate else {
-                    return
-            }
-            let managedContext =
-                appDelegate.persistentContainer.viewContext
-            
-            let entity =
-                NSEntityDescription.entity(forEntityName: "Comics",
-                                           in: managedContext)!
-            
-            let comics = NSManagedObject(entity: entity,
-                                         insertInto: managedContext)
-            
-            let uuid = UUID()
-            
-            comics.setValue(uuid, forKey: "uuid")
-            comics.setValue(url.lastPathComponent, forKeyPath: "name")
-            self.willChangeValue(forKey: "arrayOfComics")
-            self.arrayOfComics.append(comics)
-            self.didChangeValue(forKey: "arrayOfComics")
-            do {
-                try managedContext.save()
-            } catch let error as NSError {
-                print("Could not save. \(error), \(error.userInfo)")
-            }
-            
-            self.unarchiver.readArchive(forPath: url, with: uuid, withComplitionBlock: { (arrayOfData, uuid) in
-                guard let firstPage = arrayOfData[0] as? Data else {
-                    print("[ComicsGetter] First Page is nil")
-                    return
-                }
-                DispatchQueue.main.async {
-                    guard let appDelegate =
-                        UIApplication.shared.delegate as? AppDelegate else {
-                            return
-                    }
-                    let managedContext =
-                        appDelegate.persistentContainer.viewContext
-                    let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Comics")
-                    
-                    fetchRequest.predicate = NSPredicate(format: "uuid = %@",
-                                                         argumentArray: [uuid])
-                    
-                    do {
-                        let results = try managedContext.fetch(fetchRequest) as? [NSManagedObject]
-                        if let results = results {
-                            ComicsGetter.shared.willChangeValue(forKey: "arrayOfComics")
-                            results.first?.setValue(firstPage, forKey: "firstPage")
-                            results.first?.setValue(NSKeyedArchiver.archivedData(withRootObject: arrayOfData), forKey: "arrayOfData")
-                            ComicsGetter.shared.didChangeValue(forKey: "arrayOfComics")
-                        }
-                    } catch {
-                        print("Fetch Failed: \(error)")
-                    }
-                    do {
-                        try managedContext.save()
-                    } catch let error as NSError {
-                        print("Could not save. \(error), \(error.userInfo)")
-                    }
-                    ComicsGetter.shared.defineTypeOfComics(withUUID: uuid)
-                }
-            })
+        guard let appDelegate =
+            UIApplication.shared.delegate as? AppDelegate else {
+                return
         }
+        let managedContext =
+            appDelegate.persistentContainer.viewContext
+        
+        let entity =
+            NSEntityDescription.entity(forEntityName: "Comics",
+                                       in: managedContext)!
+        
+        let comics = NSManagedObject(entity: entity,
+                                     insertInto: managedContext)
+        
+        let uuid = UUID()
+        
+        comics.setValue(uuid, forKey: "uuid")
+        comics.setValue(url.lastPathComponent, forKeyPath: "name")
+        self.willChangeValue(forKey: "arrayOfComics")
+        self.arrayOfComics.append(uuid)
+        self.didChangeValue(forKey: "arrayOfComics")
+        do {
+            try managedContext.save()
+        } catch let error as NSError {
+            print("Could not save. \(error), \(error.userInfo)")
+        }
+        
+        self.unarchiver.readArchive(forPath: url, with: uuid, withComplitionBlock: { (arrayOfData, uuid) in
+            guard let firstPage = arrayOfData[0] as? Data else {
+                print("[ComicsGetter] First Page is nil")
+                return
+            }
+            DispatchQueue.main.async {
+                guard let appDelegate =
+                    UIApplication.shared.delegate as? AppDelegate else {
+                        return
+                }
+                let managedContext =
+                    appDelegate.persistentContainer.viewContext
+                
+                let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Comics")
+                
+                fetchRequest.predicate = NSPredicate(format: "uuid = %@",
+                                                     argumentArray: [uuid])
+                do {
+                    let comics = try managedContext.fetch(fetchRequest)
+                    guard let result = comics.first as? NSManagedObject else {
+                        print("AsyncFetchRequest: Failed it get final result")
+                        return
+                    }
+                    ComicsGetter.shared.willChangeValue(forKey: "arrayOfComics")
+                    result.setValue(firstPage, forKey: "firstPage")
+                    result.setValue(NSKeyedArchiver.archivedData(withRootObject: arrayOfData), forKey: "arrayOfData")
+                    ComicsGetter.shared.didChangeValue(forKey: "arrayOfComics")
+                    ComicsGetter.shared.defineTypeOfComics(withUUID: uuid)
+                    try managedContext.save()
+                } catch let error as NSError {
+                    print("Could not save. \(error), \(error.userInfo)")
+                }
+            }
+        })
     }
     
     @objc func setComicsType(notification: Notification)
@@ -124,23 +127,20 @@ class ComicsGetter: NSObject {
             }
             let managedContext =
                 appDelegate.persistentContainer.viewContext
-            let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Comics")
             
-            fetchRequest.predicate = NSPredicate(format: "uuid = %@",
+            let batchRequest = NSBatchUpdateRequest(entityName: "Comics")
+            batchRequest.predicate = NSPredicate(format: "uuid = %@",
                                                  argumentArray: [uuid])
+            batchRequest.propertiesToUpdate = [#keyPath(Comics.type): type
+            ]
+            batchRequest.affectedStores = managedContext.persistentStoreCoordinator?.persistentStores
+            
+            batchRequest.resultType = .updatedObjectsCountResultType
             
             do {
-                let results = try managedContext.fetch(fetchRequest) as? [NSManagedObject]
-                if let results = results {
-                    results.first?.setValue(type, forKey: "type")
-                }
+                _ = try managedContext.execute(batchRequest)
             } catch {
-                print("Fetch Failed: \(error)")
-            }
-            do {
-                try managedContext.save()
-            } catch let error as NSError {
-                print("Could not save. \(error), \(error.userInfo)")
+                print("Batch Failed: \(error)")
             }
         }
     }
@@ -160,10 +160,12 @@ class ComicsGetter: NSObject {
                 
                 fetchRequest.predicate = NSPredicate(format: "uuid = %@",
                                                      argumentArray: [uuid])
-                
-                do {
-                    let results = try managedContext.fetch(fetchRequest) as? [NSManagedObject]
-                    guard let data = results?.first?.value(forKey: "arrayOfData") as? Data, let arrayOfData = NSKeyedUnarchiver.unarchiveObject(with: data) as? [Data] else {
+                let asyncFetchRequest = NSAsynchronousFetchRequest<NSFetchRequestResult>(fetchRequest: fetchRequest, completionBlock: { (results) in
+                    guard let result = results.finalResult as? [NSManagedObject] else {
+                        print("AsyncFetchRequest: Failed it get final result")
+                        return
+                    }
+                    guard let data = result.first?.value(forKey: "arrayOfData") as? Data, let arrayOfData = NSKeyedUnarchiver.unarchiveObject(with: data) as? [Data] else {
                         print("ComicsGetter: can't unarchive objects")
                         return
                     }
@@ -207,6 +209,11 @@ class ComicsGetter: NSObject {
                             print("This is Western")
                         }
                     })
+                })
+                
+                
+                do {
+                    try managedContext.execute(asyncFetchRequest)
                 } catch {
                     print("Error while setting type: \(error.localizedDescription)")
                 }

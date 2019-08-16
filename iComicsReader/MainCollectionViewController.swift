@@ -52,15 +52,37 @@ class MainCollectionViewController: UIViewController, UICollectionViewDelegate, 
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: comiscCellId, for: indexPath) as? ComiscCollectionViewCell else {
             fatalError("Cell Not Created")
         }
+        let uuid = ComicsGetter.shared.arrayOfComics[indexPath.item]
         
-        if let data = ComicsGetter.shared.arrayOfComics[indexPath.item].value(forKey: "firstPage") as? Data, let previewImage = UIImage(data: data) {
-            cell.previewImage.image = previewImage
-            cell.blurImage.image = previewImage
-            cell.progressIndicator.stopAnimating()
-        } else {
-            cell.previewImage.image = nil
-            cell.blurImage.image = nil
-            cell.progressIndicator.startAnimating()
+        guard let appDelegate =
+            UIApplication.shared.delegate as? AppDelegate else {
+                return cell
+        }
+        let managedContext =
+            appDelegate.persistentContainer.viewContext
+        let fetchRequest = NSFetchRequest<NSDictionary>(entityName: "Comics")
+        
+        fetchRequest.predicate = NSPredicate(format: "uuid = %@",
+                                             argumentArray: [uuid])
+        fetchRequest.propertiesToFetch = ["firstPage"]
+        fetchRequest.resultType = .dictionaryResultType
+        
+        do {
+            let results = try managedContext.fetch(fetchRequest)
+            
+            
+            if let data = results.first?.allValues.first as? Data, let previewImage = UIImage(data: data) {
+                cell.previewImage.image = previewImage
+                cell.blurImage.image = previewImage
+                cell.progressIndicator.stopAnimating()
+            } else {
+                cell.previewImage.image = nil
+                cell.blurImage.image = nil
+                cell.progressIndicator.startAnimating()
+            }
+        }
+        catch {
+            print("MainCollectionViewController: error creating cell \(error.localizedDescription)")
         }
         
         return cell
@@ -82,7 +104,7 @@ extension MainCollectionViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let nextViewController = ComicsPageViewController()
-        nextViewController.comicsInstance = ComicsGetter.shared.arrayOfComics[indexPath.item]
+        nextViewController.comicsUUID = ComicsGetter.shared.arrayOfComics[indexPath.item]
         self.navigationController?.pushViewController(nextViewController, animated: true)
     }
 }
