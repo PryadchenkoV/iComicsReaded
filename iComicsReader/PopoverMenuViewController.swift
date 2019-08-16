@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreData
 
 class PopoverMenuViewController: UIViewController {
 
@@ -17,6 +18,8 @@ class PopoverMenuViewController: UIViewController {
     var dictionaryComicsPreferencesPlist: NSMutableDictionary!
     var filePreferencesPath = ""
     var comicsName = ""
+    var uuid: UUID?
+    var isManga = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,19 +33,38 @@ class PopoverMenuViewController: UIViewController {
         if let colorNumber = dictionaryPreferencesPlist["Comics Background Theme"] as? Int {
             segmentedControllerBGColor.selectedSegmentIndex = colorNumber
         }
-//        let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.prominent)
-//        let blurEffectView = UIVisualEffectView(effect: blurEffect)
-//        blurEffectView.frame = view.bounds
-//        blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-//        view.addSubview(blurEffectView)
-//        view.sendSubviewToBack(blurEffectView)
-        // Do any additional setup after loading the view.
+        
+        mangaModeSwitch.isOn = isManga
     }
     
     @IBAction func segmentControlBGColorPushed(_ sender: UISegmentedControl) {
         dictionaryPreferencesPlist.setValue(sender.selectedSegmentIndex, forKey: "Comics Background Theme")
         dictionaryPreferencesPlist.write(toFile: filePreferencesPath, atomically: true)
         NotificationCenter.default.post(name: kNotificationNameBackGroundColorChanged, object: nil)
+    }
+    
+    @IBAction func mangaSwitchPushed(_ sender: Any) {
+        guard let appDelegate =
+            UIApplication.shared.delegate as? AppDelegate, let uuid = uuid else {
+                return
+        }
+        let managedContext =
+            appDelegate.persistentContainer.viewContext
+        
+        let batchRequest = NSBatchUpdateRequest(entityName: "Comics")
+        batchRequest.predicate = NSPredicate(format: "uuid = %@",
+                                             argumentArray: [uuid])
+        batchRequest.propertiesToUpdate = [#keyPath(Comics.type): isManga ? "Manga" : "Western"
+        ]
+        batchRequest.affectedStores = managedContext.persistentStoreCoordinator?.persistentStores
+        
+        batchRequest.resultType = .updatedObjectsCountResultType
+        
+        do {
+            _ = try managedContext.execute(batchRequest)
+        } catch {
+            print("Batch Failed: \(error)")
+        }
     }
     
     /*

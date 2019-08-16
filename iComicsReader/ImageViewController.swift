@@ -74,32 +74,22 @@ class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestureReco
     
     // MARK: Variables
     var isAutorotationUnlocked = true
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         scrollView.delegate = self
         
         navigationItem.largeTitleDisplayMode = .never
-//        navigationController?.toolbar.isHidden = false
-//        navigationController?.setToolbarHidden(false, animated: false)
-//        barButtonSliderShow = UIBarButtonItem(image: #imageLiteral(resourceName: "SliderShow"), style: .plain, target: self, action: #selector(showSliderButtonPushed(_:)))
-//        self.navigationController?.toolbar.setItems([self.barButtonSliderShow!], animated: true)
         
         let doubleTapGuest = UITapGestureRecognizer(target: self, action: #selector(handleDoubleTapScrollView(recognizer:)))
         doubleTapGuest.numberOfTapsRequired = 2
         let singleTapGuest = UITapGestureRecognizer(target: self, action: #selector(handleSingleTapGuesture(recognizer:)))
         scrollView.addGestureRecognizer(doubleTapGuest)
         scrollView.addGestureRecognizer(singleTapGuest)
-    //        self.setupCustomBarItem()
-    
+        //        self.setupCustomBarItem()
+        
         sliderViewHeight.constant = 0
-        
-//        navigationController?.setToolbarHidden(true, animated: true)
-//        navigationController?.setNavigationBarHidden(true, animated: true)
-        
         NotificationCenter.default.addObserver(self, selector: #selector(setBGColor), name: kNotificationNameBackGroundColorChanged, object: nil)
-        
-//        self.navigationController?.addObserver(self, forKeyPath: "isToolbarHidden", options: .new, context: nil)
         if let image = image {
             imageView.image = image
         }
@@ -272,7 +262,8 @@ class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestureReco
     @IBAction func handleSingleTapGuesture(recognizer: UITapGestureRecognizer) {
         guard let navigationController = navigationController else { return }
         
-        if navigationController.isToolbarHidden {
+        if navigationController.isNavigationBarHidden
+        {
             navigationController.setToolbarHidden(false, animated: true)
             navigationController.setNavigationBarHidden(false, animated: true)
         } else {

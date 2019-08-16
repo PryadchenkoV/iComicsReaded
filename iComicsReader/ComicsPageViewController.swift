@@ -13,62 +13,111 @@ class ComicsPageViewController: UIPageViewController, UIPageViewControllerDelega
 
     var arrayOfViewControllers = [UIViewController]()
     var comicsInstance: NSManagedObject?
+    var comicsUUID: UUID?
     var pageNumber = 0
+    var buttonShowMenuPopover: UIBarButtonItem?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.dataSource = self
         self.delegate = self
+        guard let appDelegate =
+            UIApplication.shared.delegate as? AppDelegate, let uuid = comicsUUID else {
+                return
+        }
+        let managedContext =
+            appDelegate.persistentContainer.viewContext
+        
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Comics")
+        
+        fetchRequest.predicate = NSPredicate(format: "uuid = %@",
+                                             argumentArray: [uuid])
+        do {
+            comicsInstance = try managedContext.fetch(fetchRequest).first as? NSManagedObject
+        } catch {
+            print("[ComicsPageViewController]: Error while fetching request")
+        }
         prepareArrayOfViewControllers()
         guard let lastReadedPage = comicsInstance?.value(forKey: "lastReadedPage") as? Int else {
             return
         }
         changeTitle(pageNumber: 0)
         navigationItem.largeTitleDisplayMode = .never
-//        navigationController?.isToolbarHidden = true
-//        navigationController?.setToolbarHidden(true, animated: false)
-//        var barButtonSliderShow = UIBarButtonItem(image: #imageLiteral(resourceName: "SliderShow"), style: .plain, target: self, action: #selector(showSliderButtonPushed(_:)))
-//        self.navigationController?.toolbar.setItems([barButtonSliderShow], animated: true)
+        navigationController?.toolbar.isHidden = false
         
+        navigationController?.setToolbarHidden(self.navigationController!.isNavigationBarHidden, animated: false)
+        buttonShowMenuPopover = UIBarButtonItem(image: #imageLiteral(resourceName: "DotBurger"), style: .plain, target: self, action: #selector(showMenuPopover(_:)))
+        let moreInfoButton = UIButton(type: .system)
+        moreInfoButton.setImage(#imageLiteral(resourceName: "DotBurger"), for: .normal)
+        moreInfoButton.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
+        moreInfoButton.addTarget(self, action: #selector(showMenuPopover(_:)), for: .touchUpInside)
+        buttonShowMenuPopover!.customView = moreInfoButton
+        
+        self.toolbarItems = [buttonShowMenuPopover!]
+        
+        if arrayOfViewControllers.count > lastReadedPage {
         let firstViewController = arrayOfViewControllers[lastReadedPage]
-        setViewControllers([firstViewController], direction: .forward, animated: true, completion: nil)
+            setViewControllers([firstViewController], direction: .forward, animated: true, completion: nil)
+        }
         // Do any additional setup after loading the view.
     }
     
     func prepareArrayOfViewControllers() {
-        if let comicsInstance = comicsInstance, let uuid = comicsInstance.value(forKey: "uuid") as? UUID {
-            do {
-                guard let destPath = NSSearchPathForDirectoriesInDomains(.documentDirectory,
-                                                                         .userDomainMask,
-                                                                         true).first else
-                {
-                    print("[ComicsPageViewController] DestPath in nil")
-                    return
-                }
-                let dirName = uuid.uuidString
-                let fullDirPath = URL(fileURLWithPath: destPath)
-                    .appendingPathComponent(dirName)
-                let fileURLs = try FileManager.default.contentsOfDirectory(at: fullDirPath, includingPropertiesForKeys: nil)
-                for (index,_) in fileURLs.enumerated() {
+        if let comicsInstance = comicsInstance, let data = comicsInstance.value(forKey: "arrayOfData") as? Data, let arrayOfData = NSKeyedUnarchiver.unarchiveObject(with: data) as? [Data] {
+                for (index,data) in arrayOfData.enumerated() {
                     guard let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ImageView") as? ImageViewController else {
                         print("[MainPageViewController] Can't create ImageViewController")
                         continue
                     }
                     viewController.pageNumber = index
-                    viewController.pageCount = fileURLs.count
-                    let fileName = fullDirPath.appendingPathComponent("\(index).png")
-                    viewController.image = UIImage(contentsOfFile: fileName.path)
+                    viewController.pageCount = arrayOfData.count
+                    viewController.image = UIImage(data: data)
                     arrayOfViewControllers.append(viewController)
                 }
-            } catch {
-                print("[ComicsPageViewController] Error getting dir \(error.localizedDescription)")
-            }
         }
     }
     
     @IBAction func showSliderButtonPushed(_ sender: Any) {
     }
     
+    @IBAction func showMenuPopover(_ sender: Any) {
+        guard let popVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "PopoverComicsSettings") as? PopoverMenuViewController else { return }
+        popVC.modalPresentationStyle = .popover
+        guard let type = comicsInstance?.value(forKey: "type") as? String else {
+            return
+        }
+        
+        popVC.isManga = type == "Manga"
+        popVC.uuid = comicsUUID
+        let popOverVC = popVC.popoverPresentationController
+        popOverVC?.delegate = self
+        popOverVC?.sourceView = buttonShowMenuPopover!.customView
+        popOverVC?.sourceRect = CGRect(x: (buttonShowMenuPopover!.customView?.bounds.midX)!, y: (buttonShowMenuPopover!.customView?.bounds.minY)!, width: 0, height: 0)
+        popOverVC?.barButtonItem = buttonShowMenuPopover
+        popOverVC?.permittedArrowDirections = .down
+        //        popVC.comicsName = fileName
+        popVC.preferredContentSize = CGSize(width: 350, height: 300)
+        
+        UIView.animate(withDuration: 0.15, delay: 0.0, options: .curveEaseInOut, animations: {
+            self.buttonShowMenuPopover!.customView?.transform = CGAffineTransform(rotationAngle: 90 * .pi / 180)
+        })
+        
+        self.present(popVC, animated: true)
+    }
+    
+}
+
+extension ComicsPageViewController: UIPopoverPresentationControllerDelegate {
+    
+    func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
+        return .none
+    }
+    
+    func popoverPresentationControllerDidDismissPopover(_ popoverPresentationController: UIPopoverPresentationController) {
+        UIView.animate(withDuration: 0.15, delay: 0.0, options: .curveEaseInOut, animations: {
+            self.buttonShowMenuPopover!.customView?.transform = CGAffineTransform(rotationAngle: 0)
+        })
+    }
 }
 
 extension ComicsPageViewController: UIPageViewControllerDataSource {

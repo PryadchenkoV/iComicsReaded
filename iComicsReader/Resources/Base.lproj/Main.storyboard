@@ -91,7 +91,6 @@
                         <viewLayoutGuide key="safeArea" id="eKF-hg-1K2"/>
                     </view>
                     <navigationItem key="navigationItem" title="Main Collection" largeTitleDisplayMode="always" id="EvD-U8-6ws"/>
-                    <nil key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="collectionView" destination="Zci-P2-mC6" id="yoI-gx-WV7"/>
                         <segue destination="sZD-3v-XpU" kind="showDetail" id="X1f-D7-DsX"/>
@@ -191,7 +190,6 @@
                     <toolbarItems/>
                     <navigationItem key="navigationItem" largeTitleDisplayMode="never" id="nuy-Ko-PB2"/>
                     <nil key="simulatedTopBarMetrics"/>
-                    <nil key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="imageView" destination="dEj-zh-Gvz" id="xGY-9P-suN"/>
                         <outlet property="scrollView" destination="KLp-1i-fEb" id="SYI-hP-Iir"/>
@@ -256,6 +254,9 @@
                                         </label>
                                         <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="2On-Sb-riW">
                                             <rect key="frame" x="20" y="218" width="51" height="31"/>
+                                            <connections>
+                                                <action selector="mangaSwitchPushed:" destination="09z-yO-F3j" eventType="valueChanged" id="eWz-UZ-zDj"/>
+                                            </connections>
                                         </switch>
                                     </subviews>
                                     <constraints>
@@ -277,7 +278,7 @@
                                     </constraints>
                                 </view>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <blurEffect style="light"/>
+                                <blurEffect style="prominent"/>
                             </visualEffectView>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -290,7 +291,8 @@
                         <viewLayoutGuide key="safeArea" id="7GG-v3-JRg"/>
                     </view>
                     <extendedEdge key="edgesForExtendedLayout"/>
-                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <value key="contentSizeForViewInPopover" type="size" width="420" height="330"/>
+                    <modalFormSheetSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="420" height="330"/>
                     <connections>
                         <outlet property="mangaModeSwitch" destination="2On-Sb-riW" id="Dam-Z7-dav"/>
@@ -299,15 +301,19 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xNB-1O-9h0" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2349" y="151"/>
+            <point key="canvasLocation" x="893" y="674"/>
         </scene>
         <!--Page View Controller-->
         <scene sceneID="cP1-zH-jkG">
             <objects>
-                <pageViewController autoresizesArchivedViewToFullSize="NO" transitionStyle="scroll" navigationOrientation="horizontal" spineLocation="none" doubleSided="YES" id="sZD-3v-XpU" sceneMemberID="viewController">
-                    <toolbarItems/>
+                <pageViewController autoresizesArchivedViewToFullSize="NO" hidesBottomBarWhenPushed="YES" transitionStyle="scroll" navigationOrientation="horizontal" spineLocation="none" doubleSided="YES" id="sZD-3v-XpU" sceneMemberID="viewController">
+                    <toolbarItems>
+                        <barButtonItem title="Item" image="Lock" id="z5G-12-AmK">
+                            <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
+                        </barButtonItem>
+                    </toolbarItems>
                     <nil key="simulatedTopBarMetrics"/>
-                    <nil key="simulatedBottomBarMetrics"/>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                 </pageViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sTD-2H-Moo" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -316,8 +322,9 @@
         <!--Navigation Controller-->
         <scene sceneID="fue-aS-icg">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" hidesBottomBarWhenPushed="YES" toolbarHidden="NO" id="lfE-On-Xdn" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" toolbarHidden="NO" id="lfE-On-Xdn" sceneMemberID="viewController">
                     <toolbarItems/>
+                    <nil key="simulatedBottomBarMetrics"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" largeTitles="YES" id="WFx-Bg-GGi">
                         <rect key="frame" x="0.0" y="20" width="320" height="91"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -326,7 +333,7 @@
                         </textAttributes>
                     </navigationBar>
                     <nil name="viewControllers"/>
-                    <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="GjO-Bx-pji">
+                    <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="3Na-kl-EAB">
                         <rect key="frame" x="0.0" y="524" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </toolbar>
@@ -335,8 +342,12 @@
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="A9G-9P-4l2" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <barButtonItem title="Item" id="69p-H8-kno"/>
             </objects>
             <point key="canvasLocation" x="-760.86956521739137" y="25.446428571428569"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="Lock" width="30" height="30"/>
+    </resources>
 </document>
