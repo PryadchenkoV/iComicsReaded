@@ -9,18 +9,27 @@
 import UIKit
 import CoreData
 
-class ComicsPageViewController: UIPageViewController, UIPageViewControllerDelegate {
+class ComicsPageViewController: UIPageViewController {
 
     var arrayOfViewControllers = [UIViewController]()
     var comicsInstance: NSManagedObject?
     var comicsUUID: UUID?
     var pageNumber = 0
+    var bufIndex = 0
     var buttonShowMenuPopover: UIBarButtonItem?
+    
+    var isManga: Bool {
+        guard let type = comicsInstance?.value(forKey: "type") as? String else {
+            return false
+        }
+        return type == "Manga"
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.dataSource = self
         self.delegate = self
+        
         guard let appDelegate =
             UIApplication.shared.delegate as? AppDelegate, let uuid = comicsUUID else {
                 return
@@ -37,11 +46,13 @@ class ComicsPageViewController: UIPageViewController, UIPageViewControllerDelega
         } catch {
             print("[ComicsPageViewController]: Error while fetching request")
         }
+        
         prepareArrayOfViewControllers()
         guard let lastReadedPage = comicsInstance?.value(forKey: "lastReadedPage") as? Int else {
             return
         }
-        changeTitle(pageNumber: 0)
+        
+        changeTitle(pageNumber: lastReadedPage)
         navigationItem.largeTitleDisplayMode = .never
         navigationController?.toolbar.isHidden = false
         
@@ -54,12 +65,41 @@ class ComicsPageViewController: UIPageViewController, UIPageViewControllerDelega
         buttonShowMenuPopover!.customView = moreInfoButton
         
         self.toolbarItems = [buttonShowMenuPopover!]
+        var pageToDisplay = lastReadedPage
+        
+        if isManga {
+            pageToDisplay = arrayOfViewControllers.count - 1 - lastReadedPage
+            arrayOfViewControllers.reverse()
+        }
         
         if arrayOfViewControllers.count > lastReadedPage {
-        let firstViewController = arrayOfViewControllers[lastReadedPage]
-            setViewControllers([firstViewController], direction: .forward, animated: true, completion: nil)
+            setViewControllers([arrayOfViewControllers[pageToDisplay]], direction: isManga ? .reverse : .forward, animated: true, completion: nil)
         }
         // Do any additional setup after loading the view.
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        guard let appDelegate =
+            UIApplication.shared.delegate as? AppDelegate, let uuid = comicsUUID else {
+                return
+        }
+        let managedContext =
+            appDelegate.persistentContainer.viewContext
+        
+        let batchRequest = NSBatchUpdateRequest(entityName: "Comics")
+        batchRequest.predicate = NSPredicate(format: "uuid = %@",
+                                             argumentArray: [uuid])
+        batchRequest.propertiesToUpdate = [#keyPath(Comics.lastReadedPage) : pageNumber]
+        batchRequest.affectedStores = managedContext.persistentStoreCoordinator?.persistentStores
+        
+        batchRequest.resultType = .updatedObjectsCountResultType
+        
+        do {
+            _ = try managedContext.execute(batchRequest)
+        } catch {
+            print("Batch Failed: \(error)")
+        }
     }
     
     func prepareArrayOfViewControllers() {
@@ -83,11 +123,8 @@ class ComicsPageViewController: UIPageViewController, UIPageViewControllerDelega
     @IBAction func showMenuPopover(_ sender: Any) {
         guard let popVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "PopoverComicsSettings") as? PopoverMenuViewController else { return }
         popVC.modalPresentationStyle = .popover
-        guard let type = comicsInstance?.value(forKey: "type") as? String else {
-            return
-        }
         
-        popVC.isManga = type == "Manga"
+        popVC.isManga = isManga
         popVC.uuid = comicsUUID
         let popOverVC = popVC.popoverPresentationController
         popOverVC?.delegate = self
@@ -95,14 +132,27 @@ class ComicsPageViewController: UIPageViewController, UIPageViewControllerDelega
         popOverVC?.sourceRect = CGRect(x: (buttonShowMenuPopover!.customView?.bounds.midX)!, y: (buttonShowMenuPopover!.customView?.bounds.minY)!, width: 0, height: 0)
         popOverVC?.barButtonItem = buttonShowMenuPopover
         popOverVC?.permittedArrowDirections = .down
-        //        popVC.comicsName = fileName
-        popVC.preferredContentSize = CGSize(width: 350, height: 300)
+        popVC.completionBlock = {
+            UIView.animate(withDuration: 0.15, delay: 0.0, options: .curveEaseInOut, animations: {
+                self.buttonShowMenuPopover!.customView?.transform = CGAffineTransform(rotationAngle: 0)
+            })
+        }
+        
         
         UIView.animate(withDuration: 0.15, delay: 0.0, options: .curveEaseInOut, animations: {
             self.buttonShowMenuPopover!.customView?.transform = CGAffineTransform(rotationAngle: 90 * .pi / 180)
         })
-        
         self.present(popVC, animated: true)
+    }
+    
+    func changeTitle(pageNumber: Int) {
+        DispatchQueue.main.async {
+            if UIDevice.current.orientation == .landscapeLeft || UIDevice.current.orientation == .landscapeRight {
+                self.title = String(format: NSLocalizedString("%d-%d of %d", comment: ""), pageNumber + 1, pageNumber + 2,  self.arrayOfViewControllers.count)
+            } else {
+                self.title = String(format: NSLocalizedString("%d of %d", comment: ""), pageNumber + 1, self.arrayOfViewControllers.count)
+            }
+        }
     }
     
 }
@@ -120,6 +170,49 @@ extension ComicsPageViewController: UIPopoverPresentationControllerDelegate {
     }
 }
 
+extension ComicsPageViewController: UIPageViewControllerDelegate {
+    
+    func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
+        if completed {
+            if isManga {
+                pageNumber = arrayOfViewControllers.count - 1 - bufIndex
+            } else {
+                pageNumber = bufIndex
+            }
+            changeTitle(pageNumber: pageNumber)
+        }
+    }
+    
+    func pageViewController(_ pageViewController: UIPageViewController, spineLocationFor orientation: UIInterfaceOrientation) -> UIPageViewController.SpineLocation {
+        if orientation.isPortrait {
+            guard let currentViewController = pageViewController.viewControllers?.first else {
+                return .none
+            }
+            setViewControllers([currentViewController], direction: isManga ? .reverse : .forward, animated: true, completion: nil)
+            if isManga {
+                return .max
+            } else {
+                return .min
+            }
+        } else {
+            guard let currentViewController = pageViewController.viewControllers?.first, let indexOfController = arrayOfViewControllers.firstIndex(of: currentViewController) else {
+                return .none
+            }
+            if indexOfController < arrayOfViewControllers.count {
+                var indexOfSecondImage = indexOfController + 1
+                if isManga {
+                    indexOfSecondImage -= 2
+                }
+                setViewControllers([arrayOfViewControllers[indexOfController], arrayOfViewControllers[indexOfSecondImage]], direction: isManga ? .reverse : .forward, animated: true, completion: nil)
+                return .mid
+            } else {
+                return .none
+            }
+        }
+    }
+    
+}
+
 extension ComicsPageViewController: UIPageViewControllerDataSource {
     
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
@@ -135,8 +228,11 @@ extension ComicsPageViewController: UIPageViewControllerDataSource {
         guard arrayOfViewControllers.count > previousIndex else {
             return nil
         }
-        pageNumber = previousIndex
-        changeTitle(pageNumber: pageNumber)
+        
+        if (UIDevice.current.orientation == .landscapeLeft || UIDevice.current.orientation == .landscapeRight) && (previousIndex + 2 < 0 || previousIndex - 2 > arrayOfViewControllers.count){
+            return nil
+        }
+        bufIndex = previousIndex
         return arrayOfViewControllers[previousIndex]
     }
     
@@ -147,22 +243,20 @@ extension ComicsPageViewController: UIPageViewControllerDataSource {
         let nextIndex = viewControllerIndex + 1
         let arrayCount = arrayOfViewControllers.count
         
-        guard arrayCount != nextIndex else {
-            return nil
-        }
-        
         guard arrayCount > nextIndex else {
             return nil
         }
-        pageNumber = nextIndex
-        changeTitle(pageNumber: pageNumber)
-        return arrayOfViewControllers[nextIndex]
-    }
-    
-    func changeTitle(pageNumber: Int) {
-        DispatchQueue.main.async {
-            self.title = String(format: NSLocalizedString("%d of %d", comment: ""), pageNumber + 1, self.arrayOfViewControllers.count)
+        
+        guard nextIndex >= 0 else {
+            return nil
         }
+        
+        if (UIDevice.current.orientation == .landscapeLeft || UIDevice.current.orientation == .landscapeRight) && (nextIndex - 2 < 0 || nextIndex + 2 > arrayOfViewControllers.count) {
+            return nil
+        }
+        
+        bufIndex = nextIndex
+        return arrayOfViewControllers[nextIndex]
     }
     
 }

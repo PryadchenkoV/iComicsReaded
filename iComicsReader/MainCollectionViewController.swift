@@ -103,7 +103,7 @@ extension MainCollectionViewController: UICollectionViewDelegateFlowLayout {
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let nextViewController = ComicsPageViewController()
+        let nextViewController = ComicsPageViewController(transitionStyle: .pageCurl, navigationOrientation: .horizontal, options: nil)
         nextViewController.comicsUUID = ComicsGetter.shared.arrayOfComics[indexPath.item]
         self.navigationController?.pushViewController(nextViewController, animated: true)
     }

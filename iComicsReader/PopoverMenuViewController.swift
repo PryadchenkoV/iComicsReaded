@@ -13,13 +13,14 @@ class PopoverMenuViewController: UIViewController {
 
     @IBOutlet weak var segmentedControllerBGColor: UISegmentedControl!
     @IBOutlet weak var mangaModeSwitch: UISwitch!
+    @IBOutlet weak var closeButton: UIButton!
     
     var dictionaryPreferencesPlist: NSMutableDictionary!
     var dictionaryComicsPreferencesPlist: NSMutableDictionary!
     var filePreferencesPath = ""
-    var comicsName = ""
     var uuid: UUID?
     var isManga = false
+    var completionBlock: (() -> Void)?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,6 +36,20 @@ class PopoverMenuViewController: UIViewController {
         }
         
         mangaModeSwitch.isOn = isManga
+    }
+    
+    override var preferredContentSize: CGSize {
+        get {
+            let size = CGSize(width: 350, height: 300)
+            return size
+        }
+        set {
+            super.preferredContentSize = newValue
+        }
+    }
+    
+    @IBAction func closeButtonPushed(_ sender: Any) {
+        self.dismiss(animated: true, completion: { self.completionBlock?() })
     }
     
     @IBAction func segmentControlBGColorPushed(_ sender: UISegmentedControl) {

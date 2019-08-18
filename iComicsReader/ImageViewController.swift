@@ -93,6 +93,7 @@ class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestureReco
         if let image = image {
             imageView.image = image
         }
+        setBGColor()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
