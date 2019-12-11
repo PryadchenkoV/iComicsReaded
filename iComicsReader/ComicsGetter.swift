@@ -12,6 +12,7 @@ import CoreML
 import Vision
 
 let kTypeOfComicsDefinedNotificationName: NSNotification.Name = NSNotification.Name(rawValue: "TypeOfComicsDefined")
+let kRecentComicsDefaultsKey = "RecentComics"
 
 typealias closureCallback = (Dictionary<String, Any>) -> ()
 
@@ -20,12 +21,22 @@ class ComicsGetter: NSObject {
     static let shared = ComicsGetter()
     
     var arrayOfComics = [UUID]()
+    var arrayOfRecentComics = [String]()
     
     let unarchiver = Unarchiver.sharedInstance()
     
     override init() {
         super.init()
         NotificationCenter.default.addObserver(self, selector: #selector(setComicsType(notification:)), name: kTypeOfComicsDefinedNotificationName, object: nil)
+        self.reloadAllComics()
+        self.reloadRecentComics()
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+    
+    func reloadAllComics() {
         guard let appDelegate =
             UIApplication.shared.delegate as? AppDelegate else {
                 return
@@ -48,8 +59,18 @@ class ComicsGetter: NSObject {
         }
     }
     
-    deinit {
-        NotificationCenter.default.removeObserver(self)
+    func reloadRecentComics() {
+        if let defaultArray = UserDefaults.standard.array(forKey: kRecentComicsDefaultsKey) as? [String] {
+            self.arrayOfRecentComics = defaultArray
+        }
+    }
+    
+    func addComicsToRecent(withUUID uuid: UUID) {
+        if let index = arrayOfRecentComics.firstIndex(of: uuid.uuidString) {
+            arrayOfRecentComics.remove(at: index)
+        }
+        arrayOfRecentComics.insert(uuid.uuidString, at: 0)
+        UserDefaults.standard.set(arrayOfRecentComics, forKey: kRecentComicsDefaultsKey)
     }
     
     func addComics(withPath path: String) {
@@ -218,6 +239,38 @@ class ComicsGetter: NSObject {
                     print("Error while setting type: \(error.localizedDescription)")
                 }
             }
+        }
+    }
+    
+    func deleteComics(withUUID uuid: UUID, complitionBlock block: (Int) -> ()) {
+        guard let appDelegate =
+            UIApplication.shared.delegate as? AppDelegate, let index = ComicsGetter.shared.arrayOfComics.firstIndex(of: uuid) else {
+                return
+        }
+        let managedContext =
+            appDelegate.persistentContainer.viewContext
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Comics")
+        
+        fetchRequest.predicate = NSPredicate(format: "uuid = %@",
+                                             argumentArray: [uuid])
+        
+        let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
+        do {
+            try managedContext.execute(deleteRequest)
+                do {
+                    try managedContext.save()
+                    if let index = self.arrayOfRecentComics.firstIndex(of: uuid.uuidString) {
+                        arrayOfRecentComics.remove(at: index)
+                    }
+                    self.reloadAllComics()
+                    self.reloadRecentComics()
+                    block(index)
+                } catch {
+                    print("\(#function) save error")
+                }
+//            }
+        } catch {
+            print("\(#function) catch exeption")
         }
     }
     

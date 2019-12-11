@@ -15,10 +15,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
     let screenWidth = UIScreen.main.bounds.width
+    let screenHeight = UIScreen.main.bounds.height
     var restrictRotation:UIInterfaceOrientationMask = .all
     
     func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
         return self.restrictRotation
+    }
+    
+    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
+        if url.isFileURL {
+            print("Import")
+            ComicsGetter.shared.addComics(withPath: url.path)
+        }
+        return true
     }
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
@@ -45,6 +54,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             
         }
         #endif
+        
+        if #available(iOS 13.0, *) {
+            let largeTitleAppearance = UINavigationBarAppearance()
+            largeTitleAppearance.configureWithOpaqueBackground()
+            let standartAppearance = largeTitleAppearance.copy()
+            largeTitleAppearance.shadowColor = nil
+//            appearance.largeTitleTextAttributes = [ .foregroundColor : UIColor.clear ]
+            UINavigationBar.appearance().standardAppearance = standartAppearance
+            UINavigationBar.appearance().scrollEdgeAppearance = largeTitleAppearance
+            
+            let toolBarAppearance = UIToolbarAppearance()
+            toolBarAppearance.configureWithOpaqueBackground()
+            UIToolbar.appearance().standardAppearance = toolBarAppearance
+        }
         
         if let bundlePath = Bundle.main.path(forResource: "Preferences", ofType: "plist"),
             let destPath = NSSearchPathForDirectoriesInDomains(.documentDirectory,
@@ -120,6 +143,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func saveContext () {
         let context = persistentContainer.viewContext
+        context.mergePolicy = NSMergePolicy(merge: NSMergePolicyType.mergeByPropertyObjectTrumpMergePolicyType)
         if context.hasChanges {
             do {
                 try context.save()

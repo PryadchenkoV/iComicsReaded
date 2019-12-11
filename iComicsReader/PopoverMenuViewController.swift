@@ -11,6 +11,7 @@ import CoreData
 
 class PopoverMenuViewController: UIViewController {
 
+    @IBOutlet weak var segmentControllerLandscapeMode: UISegmentedControl!
     @IBOutlet weak var segmentedControllerBGColor: UISegmentedControl!
     @IBOutlet weak var mangaModeSwitch: UISwitch!
     @IBOutlet weak var closeButton: UIButton!
@@ -40,7 +41,7 @@ class PopoverMenuViewController: UIViewController {
     
     override var preferredContentSize: CGSize {
         get {
-            let size = CGSize(width: 350, height: 300)
+            let size = CGSize(width: 350, height: 400)
             return size
         }
         set {
@@ -50,6 +51,12 @@ class PopoverMenuViewController: UIViewController {
     
     @IBAction func closeButtonPushed(_ sender: Any) {
         self.dismiss(animated: true, completion: { self.completionBlock?() })
+    }
+    
+    @IBAction func segmentControlPageNumber(_ sender: UISegmentedControl) {
+        dictionaryPreferencesPlist.setValue(sender.selectedSegmentIndex, forKey: "Landscape Page Number")
+        dictionaryPreferencesPlist.write(toFile: filePreferencesPath, atomically: true)
+        NotificationCenter.default.post(name: kNotificationNameBackGroundColorChanged, object: nil)
     }
     
     @IBAction func segmentControlBGColorPushed(_ sender: UISegmentedControl) {
@@ -69,14 +76,32 @@ class PopoverMenuViewController: UIViewController {
         let batchRequest = NSBatchUpdateRequest(entityName: "Comics")
         batchRequest.predicate = NSPredicate(format: "uuid = %@",
                                              argumentArray: [uuid])
-        batchRequest.propertiesToUpdate = [#keyPath(Comics.type): isManga ? "Manga" : "Western"
+        batchRequest.propertiesToUpdate = [#keyPath(Comics.type): isManga ? "Western" : "Manga"
         ]
         batchRequest.affectedStores = managedContext.persistentStoreCoordinator?.persistentStores
         
-        batchRequest.resultType = .updatedObjectsCountResultType
+        batchRequest.resultType = .updatedObjectIDsResultType
         
         do {
-            _ = try managedContext.execute(batchRequest)
+            guard let butchResult = try managedContext.execute(batchRequest) as? NSBatchUpdateResult, let arrayOfUUID = butchResult.result as? [NSManagedObjectID] else {
+                return
+            }
+            if arrayOfUUID.count > 0 {
+                for objectID in arrayOfUUID {
+                    var object: NSManagedObject?
+                    do {
+                        object = try managedContext.existingObject(with: objectID)
+                        if let object = object {
+                            managedContext.refresh(object, mergeChanges: true)
+                        }
+                    } catch  {
+                        print("Refresh Failed: \(error)")
+                    }
+                }
+                NotificationCenter.default.post(name: kNotificationNameComicsTypeChanged, object: nil)
+                isManga = !isManga
+                mangaModeSwitch.isOn = isManga
+            }
         } catch {
             print("Batch Failed: \(error)")
         }

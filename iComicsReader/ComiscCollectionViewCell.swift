@@ -8,17 +8,22 @@
 
 import UIKit
 
-class ComiscCollectionViewCell: UICollectionViewCell {
+class ComicsCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var blurImage: UIImageView!
     @IBOutlet weak var progressIndicator: UIActivityIndicatorView!
     @IBOutlet weak var previewImage: UIImageView!
+    @IBOutlet weak var favoriteImageIndicator: UIImageView!
+    @IBOutlet weak var favoriteView: UIVisualEffectView!
+    
+    
+    var uuid = UUID()
  
     override func awakeFromNib() {
         super.awakeFromNib()
         self.progressIndicator.startAnimating()
         self.contentView.layer.cornerRadius = 10.0
         self.contentView.layer.borderWidth = 0.5
-        self.contentView.layer.borderColor = UIColor.black.cgColor
+        self.contentView.layer.borderColor = UIColor.opaqueSeparator.cgColor
         self.contentView.layer.masksToBounds = true
         self.contentView.layer.backgroundColor = #colorLiteral(red: 0.6666666865, green: 0.6666666865, blue: 0.6666666865, alpha: 1)
         addObserver(self, forKeyPath: "previewImage.image", options: [], context: nil)

@@ -11,7 +11,10 @@ import Vision
 import CoreData
 
 let kNotificationNameBackGroundColorChanged: NSNotification.Name = NSNotification.Name(rawValue: "BGColorChanged")
+let kNotificationNameComicsTypeChanged: NSNotification.Name = NSNotification.Name(rawValue: "ComicsTypeChanged")
 
+let kNotificationNameToolbarHidden: NSNotification.Name = NSNotification.Name(rawValue: "ToolbarHidden")
+let kNotificationNameToolbarShown: NSNotification.Name = NSNotification.Name(rawValue: "ToolbarShown")
 // MARK: Extensions
 
 extension ImageViewController: UIPopoverPresentationControllerDelegate {
@@ -21,9 +24,6 @@ extension ImageViewController: UIPopoverPresentationControllerDelegate {
     }
     
     func popoverPresentationControllerDidDismissPopover(_ popoverPresentationController: UIPopoverPresentationController) {
-        UIView.animate(withDuration: 0.15, delay: 0.0, options: .curveEaseInOut, animations: {
-            self.buttonShowMenuPopover.customView?.transform = CGAffineTransform(rotationAngle: 0)
-        })
     }
 }
 
@@ -66,7 +66,6 @@ class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestureReco
     @IBOutlet weak var buttonShowMenuPopover: UIBarButtonItem!
     var barButtonSliderShow: UIBarButtonItem?
     @IBOutlet weak var sliderViewHeight: NSLayoutConstraint!
-    @IBOutlet weak var viewWithSlider: UIView!
     
     var image: UIImage?
     var pageNumber: Int?
@@ -88,7 +87,6 @@ class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestureReco
         scrollView.addGestureRecognizer(singleTapGuest)
         //        self.setupCustomBarItem()
         
-        sliderViewHeight.constant = 0
         NotificationCenter.default.addObserver(self, selector: #selector(setBGColor), name: kNotificationNameBackGroundColorChanged, object: nil)
         if let image = image {
             imageView.image = image
@@ -220,21 +218,7 @@ class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestureReco
     
     @IBAction func showMenuPopover(_ sender: Any) {
         guard let popVC = storyboard?.instantiateViewController(withIdentifier: "PopoverComicsSettings") as? PopoverMenuViewController else { return }
-        popVC.modalPresentationStyle = .popover
-
-        let popOverVC = popVC.popoverPresentationController
-        popOverVC?.delegate = self
-        popOverVC?.sourceView = buttonShowMenuPopover.customView
-        popOverVC?.sourceRect = CGRect(x: (buttonShowMenuPopover.customView?.bounds.midX)!, y: (buttonShowMenuPopover.customView?.bounds.minY)!, width: 0, height: 0)
-        popOverVC?.barButtonItem = buttonShowMenuPopover
-        popOverVC?.permittedArrowDirections = .up
-//        popVC.comicsName = fileName
-        popVC.preferredContentSize = CGSize(width: 350, height: 300)
-        
-        UIView.animate(withDuration: 0.15, delay: 0.0, options: .curveEaseInOut, animations: {
-            self.buttonShowMenuPopover.customView?.transform = CGAffineTransform(rotationAngle: 90 * .pi / 180)
-        })
-        
+        popVC.modalPresentationStyle = .formSheet
         self.present(popVC, animated: true)
     }
     
@@ -265,16 +249,15 @@ class ImageViewController: UIViewController, UIScrollViewDelegate, UIGestureReco
         
         if navigationController.isNavigationBarHidden
         {
+//            NotificationCenter.default.post(name: kNotificationNameToolbarShown, object: nil)
             navigationController.setToolbarHidden(false, animated: true)
             navigationController.setNavigationBarHidden(false, animated: true)
         } else {
+            NotificationCenter.default.post(name: kNotificationNameToolbarHidden, object: nil)
             navigationController.setToolbarHidden(true, animated: true)
             navigationController.setNavigationBarHidden(true, animated: true)
-            self.sliderViewHeight.constant = 0
+//            self.sliderViewHeight.constant = 0
         }
-        UIView.animate(withDuration: 0.1, delay: 0.0, options: .curveEaseInOut, animations: {
-            self.view.layoutIfNeeded()
-        }, completion: nil)
 //        guard let barButtonView = self.barButtonSliderShow.value(forKey: "view") as? UIView else {
 //            return
 //        }

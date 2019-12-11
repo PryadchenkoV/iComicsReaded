@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		42AC4DD9CB9F85B1EE60650C /* Pods_iComicsReader.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 10516B7C86BA258028EACBAC /* Pods_iComicsReader.framework */; };
 		E204BB4C219A1D65005A5652 /* LockOrientationBarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E204BB4B219A1D65005A5652 /* LockOrientationBarButton.swift */; };
 		E204BB54219B3222005A5652 /* PopoverMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E204BB53219B3222005A5652 /* PopoverMenuViewController.swift */; };
 		E225F9EE219B378400C1BAD5 /* Preferences.plist in Resources */ = {isa = PBXBuildFile; fileRef = E225F9ED219B378400C1BAD5 /* Preferences.plist */; };
@@ -30,6 +29,8 @@
 		E259B019225E7A59003AE2D8 /* ComicData.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E259B017225E7A59003AE2D8 /* ComicData.xcdatamodeld */; };
 		E259B01B225E7D1F003AE2D8 /* MainCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E259B01A225E7D1F003AE2D8 /* MainCollectionViewController.swift */; };
 		E259B01D225E7F4C003AE2D8 /* ComiscCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E259B01C225E7F4C003AE2D8 /* ComiscCollectionViewCell.swift */; };
+		E28B809923A0FE6A00381128 /* RecentCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E28B809823A0FE6A00381128 /* RecentCollectionViewCell.swift */; };
+		E28B809B23A13D3000381128 /* HeaderMainCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E28B809A23A13D3000381128 /* HeaderMainCollectionViewCell.swift */; };
 		E299225A217FBE3200EE2C44 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2992259217FBE3200EE2C44 /* AppDelegate.swift */; };
 		E299225F217FBE3200EE2C44 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E299225D217FBE3200EE2C44 /* Main.storyboard */; };
 		E2992261217FBE3400EE2C44 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E2992260217FBE3400EE2C44 /* Assets.xcassets */; };
@@ -54,8 +55,6 @@
 
 /* Begin PBXFileReference section */
 		10516B7C86BA258028EACBAC /* Pods_iComicsReader.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_iComicsReader.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		6794FE508FDD331340287FBC /* Pods-iComicsReader.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iComicsReader.debug.xcconfig"; path = "Pods/Target Support Files/Pods-iComicsReader/Pods-iComicsReader.debug.xcconfig"; sourceTree = "<group>"; };
-		9E352A700AE7B6227FE317C9 /* Pods-iComicsReader.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iComicsReader.release.xcconfig"; path = "Pods/Target Support Files/Pods-iComicsReader/Pods-iComicsReader.release.xcconfig"; sourceTree = "<group>"; };
 		E204BB4B219A1D65005A5652 /* LockOrientationBarButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockOrientationBarButton.swift; sourceTree = "<group>"; };
 		E204BB50219B2A27005A5652 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Main.strings; sourceTree = "<group>"; };
 		E204BB52219B2B7A005A5652 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Main.strings; sourceTree = "<group>"; };
@@ -89,6 +88,8 @@
 		E259B018225E7A59003AE2D8 /* ComicData.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ComicData.xcdatamodel; sourceTree = "<group>"; };
 		E259B01A225E7D1F003AE2D8 /* MainCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCollectionViewController.swift; sourceTree = "<group>"; };
 		E259B01C225E7F4C003AE2D8 /* ComiscCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComiscCollectionViewCell.swift; sourceTree = "<group>"; };
+		E28B809823A0FE6A00381128 /* RecentCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentCollectionViewCell.swift; sourceTree = "<group>"; };
+		E28B809A23A13D3000381128 /* HeaderMainCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderMainCollectionViewCell.swift; sourceTree = "<group>"; };
 		E2992256217FBE3200EE2C44 /* iComicsReader.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iComicsReader.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E2992259217FBE3200EE2C44 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E299225E217FBE3200EE2C44 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -111,22 +112,12 @@
 				E245FEC821908AC1000D7F04 /* libz.1.1.3.tbd in Frameworks */,
 				E245FEC621908AB9000D7F04 /* libxml2.2.tbd in Frameworks */,
 				E245FEC421908AB3000D7F04 /* libbz2.tbd in Frameworks */,
-				42AC4DD9CB9F85B1EE60650C /* Pods_iComicsReader.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		0ED6882762ABEEEBB8CC58A8 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				6794FE508FDD331340287FBC /* Pods-iComicsReader.debug.xcconfig */,
-				9E352A700AE7B6227FE317C9 /* Pods-iComicsReader.release.xcconfig */,
-			);
-			name = Pods;
-			sourceTree = "<group>";
-		};
 		247979A778BA7096B81F75E4 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -194,7 +185,6 @@
 			children = (
 				E2992258217FBE3200EE2C44 /* iComicsReader */,
 				E2992257217FBE3200EE2C44 /* Products */,
-				0ED6882762ABEEEBB8CC58A8 /* Pods */,
 				247979A778BA7096B81F75E4 /* Frameworks */,
 			);
 			sourceTree = "<group>";
@@ -224,7 +214,9 @@
 				E204BB4B219A1D65005A5652 /* LockOrientationBarButton.swift */,
 				E204BB53219B3222005A5652 /* PopoverMenuViewController.swift */,
 				E225F9ED219B378400C1BAD5 /* Preferences.plist */,
+				E28B809A23A13D3000381128 /* HeaderMainCollectionViewCell.swift */,
 				E259B01C225E7F4C003AE2D8 /* ComiscCollectionViewCell.swift */,
+				E28B809823A0FE6A00381128 /* RecentCollectionViewCell.swift */,
 			);
 			path = iComicsReader;
 			sourceTree = "<group>";
@@ -236,7 +228,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = E2992268217FBE3400EE2C44 /* Build configuration list for PBXNativeTarget "iComicsReader" */;
 			buildPhases = (
-				A74FD75B369B7C3A20DA3A94 /* [CP] Check Pods Manifest.lock */,
 				E2992252217FBE3200EE2C44 /* Sources */,
 				E2992253217FBE3200EE2C44 /* Frameworks */,
 				E2992254217FBE3200EE2C44 /* Resources */,
@@ -309,31 +300,6 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
-/* Begin PBXShellScriptBuildPhase section */
-		A74FD75B369B7C3A20DA3A94 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-iComicsReader-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-/* End PBXShellScriptBuildPhase section */
-
 /* Begin PBXSourcesBuildPhase section */
 		E2992252217FBE3200EE2C44 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -341,8 +307,10 @@
 			files = (
 				E239C3A3229B104E00629383 /* ComicsPageViewController.swift in Sources */,
 				E204BB4C219A1D65005A5652 /* LockOrientationBarButton.swift in Sources */,
+				E28B809923A0FE6A00381128 /* RecentCollectionViewCell.swift in Sources */,
 				E29AB734218643C40080D6F5 /* ComicsGetter.swift in Sources */,
 				E259B019225E7A59003AE2D8 /* ComicData.xcdatamodeld in Sources */,
+				E28B809B23A13D3000381128 /* HeaderMainCollectionViewCell.swift in Sources */,
 				E259B01B225E7D1F003AE2D8 /* MainCollectionViewController.swift in Sources */,
 				E259B014225D33DC003AE2D8 /* MangaWesternClassifier.mlmodel in Sources */,
 				E259B01D225E7F4C003AE2D8 /* ComiscCollectionViewCell.swift in Sources */,
@@ -508,11 +476,10 @@
 		};
 		E2992269217FBE3400EE2C44 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 6794FE508FDD331340287FBC /* Pods-iComicsReader.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = MGDFYF2DS8;
 				ENABLE_BITCODE = YES;
@@ -522,7 +489,7 @@
 				);
 				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/iComicsReader/include/";
 				INFOPLIST_FILE = iComicsReader/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -534,6 +501,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.miemhsepm.iComicsReader;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "iComicsReader/include/iComicsReader-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -543,11 +511,10 @@
 		};
 		E299226A217FBE3400EE2C44 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9E352A700AE7B6227FE317C9 /* Pods-iComicsReader.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = MGDFYF2DS8;
 				ENABLE_BITCODE = YES;
@@ -557,7 +524,7 @@
 				);
 				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/iComicsReader/include/";
 				INFOPLIST_FILE = iComicsReader/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -569,6 +536,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.miemhsepm.iComicsReader;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "iComicsReader/include/iComicsReader-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
